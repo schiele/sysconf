@@ -1,0 +1,28 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Robert Schiele
+	email = rschiele@gmail.com
+[push]
+	default = simple
+[core]
+	gitproxy = /home/rschiele/bin/proxy
+[log]
+	decorate = short
+[url "git@github.com:"]
+	insteadOf = github:
+	insteadOf = https://github.com/
+	insteadOf = git://github.com/
+[url "git@gitlab.kitware.com:"]
+	insteadOf = kitware:
+	insteadOf = https://gitlab.kitware.com/
+	insteadOf = git://gitlab.kitware.com/
+[url "git://gcc.gnu.org/git/"]
+	insteadOf = gcc:
+[url "git://source.winehq.org/git/"]
+	insteadOf = winehq:
+	insteadOf = http://source.winehq.org/git/
+	insteadOf = https://source.winehq.org/git/
+[url "git://sourceware.org/git/"]
+	insteadOf = sourceware:
+[url "https://gerrit.googlesource.com/"]
+	insteadOf = googlesource:

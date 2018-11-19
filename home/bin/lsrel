@@ -1,0 +1,51 @@
+#!/bin/bash
+mycurl()
+{
+    curl "$@" 2>&1
+}
+winscp_all_rel()
+{
+    mycurl https://winscp.net/eng/docs/history |
+    sed -ne 's, *<h2 id="[0-9.]*">\([^<]*\)</h2>,\1,p'
+}
+winscp_cur_rel()
+{
+    winscp_all_rel |
+    grep -v ' ' |
+    head -n 1
+}
+putty_cur_rel()
+{
+    mycurl https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html |
+    sed -ne 's,.*<TITLE>Download PuTTY: latest release (\(.*\))</TITLE>.*,\1,p'
+}
+cmake_cur_rel()
+{
+    mycurl https://cmake.org/download/ |
+    sed -ne 's,.*<h3>Latest Release (\(.*\))</h3>.*,\1,p'
+}
+python_all_rel()
+{
+    mycurl https://www.python.org/downloads/ |
+    sed -ne 's,.*<span class="release-number"><a href="/downloads/release/python-.*/">Python \(.*\)</a></span>.*,\1,p'
+}
+checkver()
+{
+    CUR=$(${1}_cur_rel)
+    if test "$CUR" = "$2"; then
+	echo -e "$1:\t$2\t\e[92m(current)\e[39m"
+    else
+	echo -e "$1:\t$2\t\e[91m(current: $CUR)\e[39m"
+    fi
+}
+checkver putty 0.70
+checkver winscp 5.13.4
+checkver cmake 3.12.4
+
+#for i in $(python_all_rel); do
+#echo $i
+#echo $i | tr . ' ' | read MAJOR MINOR PATCH
+#MAJOR=${i/.*.*}
+#B
+#echo $MAJOR-$MINOR-$PATCH
+#done

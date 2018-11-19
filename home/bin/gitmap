@@ -1,0 +1,26 @@
+#!/bin/bash
+set -eu
+BASEDIR=~/git
+config()
+{
+    cd "$BASEDIR/$1"
+    case "$1" in
+        COMPANY*)
+            git config user.email robert.schiele@COMPANY.com
+            ;;
+        *)
+            git config user.email rschiele@gmail.com
+            ;;
+    esac
+}
+fetch()
+{
+    cd "$BASEDIR/$1"
+    git fetch --all -p -q ||
+    echo "ERROR at $1"
+}
+for dir in $(cd "$BASEDIR" && find * -name .git | sed -e 's,/\.git$,,'); do
+    for com in "$@"; do
+        "$com" "$dir"
+    done
+done

@@ -1,0 +1,2 @@
+#!/bin/bash
+exec /bin/nc -X connect -x 127.0.0.1:3128 $1 $2

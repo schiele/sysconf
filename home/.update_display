@@ -1,0 +1,30 @@
+#~/.bashrc: . ~/.update_display
+UPDATE_DISPLAY_FIRST=
+UPDATE_DISPLAY_GOOD=
+for UPDATE_DISPLAY_D in $(seq 10 63); do
+    UPDATE_DISPLAY_DSTR=localhost:$UPDATE_DISPLAY_D.0
+    if xset -display $UPDATE_DISPLAY_DSTR q > /dev/null 2>&1; then
+	if test "$DISPLAY" = "$UPDATE_DISPLAY_DSTR"; then
+	    test "$1" = -v && echo >&2 "option: $UPDATE_DISPLAY_DSTR (current)"
+	    UPDATE_DISPLAY_GOOD=1
+	else
+	    test "$1" = -v && echo >&2 "option: $UPDATE_DISPLAY_DSTR"
+	    test "$UPDATE_DISPLAY_FIRST" ||
+	    UPDATE_DISPLAY_FIRST="$UPDATE_DISPLAY_DSTR"
+	fi
+    fi
+done
+if ! test "$UPDATE_DISPLAY_GOOD"; then
+    if test "$UPDATE_DISPLAY_FIRST"; then
+	if test "$DISPLAY"; then
+	    echo >&2 "export DISPLAY=$UPDATE_DISPLAY_FIRST (was \"$DISPLAY\")"
+	else
+	    echo >&2 "export DISPLAY=$UPDATE_DISPLAY_FIRST (was not set)"
+	fi
+	export DISPLAY="$UPDATE_DISPLAY_FIRST"
+    else
+	echo >&2 "No valid display found!"
+    fi
+fi
+unset UPDATE_DISPLAY_FIRST UPDATE_DISPLAY_GOOD UPDATE_DISPLAY_D \
+      UPDATE_DISPLAY_DSTR

@@ -1,0 +1,5 @@
+altscreen on
+caption always
+defscrollback 1000000
+shell -bash
+startup_message off
