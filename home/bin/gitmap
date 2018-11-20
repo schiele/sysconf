@@ -19,8 +19,14 @@ fetch()
     git fetch --all -p -q ||
     echo "ERROR at $1"
 }
+gc()
+{
+    cd "$BASEDIR/$1"
+    git gc --aggressive ||
+    echo "ERROR at $1"
+}
 for dir in $(cd "$BASEDIR" && find * -name .git | sed -e 's,/\.git$,,'); do
     for com in "$@"; do
-        "$com" "$dir"
+        "$com" "$dir" 2>&1 | logify "$dir:"
     done
 done

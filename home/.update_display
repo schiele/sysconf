@@ -1,4 +1,4 @@
-#~/.bashrc: . ~/.update_display
+#~/.bashrc: #. ~/.update_display
 UPDATE_DISPLAY_FIRST=
 UPDATE_DISPLAY_GOOD=
 for UPDATE_DISPLAY_D in $(seq 10 63); do
