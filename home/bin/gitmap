@@ -27,6 +27,6 @@ gc()
 }
 for dir in $(cd "$BASEDIR" && find * -name .git | sed -e 's,/\.git$,,'); do
     for com in "$@"; do
-        "$com" "$dir" 2>&1 | logify "$dir:"
+        "$com" "$dir" #2>&1 | logify "$dir:"
     done
 done

@@ -1,0 +1,15 @@
+#!/bin/bash
+set -eu
+echo 'digraph cip {'
+echo 'overlap=false'
+for file in $1.*; do
+    node="${file/$1.}"
+    echo '"'"$node"'" [label="'"$node"'\n'"$(
+            sed -ne 's,^execve("[^"]*/\([^"/]*\)".*$,\1,p' $file |
+            tr '\n' / | sed -e 's,/$,,;s,/,\\n,g'
+        )"'\n'"$(
+            sed -ne 's,^+++ exited with \([0-9]*\) +++$,\1,p' $file
+        )"'"]'
+done
+grep ^ $1.* | sed -ne 's/^'$1'.\([0-9]*\):\(\(clone\)\|\(fork\)\|\(vfork\)\)(.*) *= \([0-9]*\)$/"\1"->"\5"/p'
+echo '}'

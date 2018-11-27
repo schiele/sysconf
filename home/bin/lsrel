@@ -40,7 +40,7 @@ checkver()
 }
 checkver putty 0.70
 checkver winscp 5.13.4
-checkver cmake 3.12.4
+checkver cmake 3.13.0
 
 #for i in $(python_all_rel); do
 #echo $i
