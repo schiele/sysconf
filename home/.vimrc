@@ -9,3 +9,7 @@ if has("autocmd")
       \   exe "normal g`\"" |
       \ endif
 endif " has("autocmd")
+
+set number
+set relativenumber
+highlight LineNr ctermfg=grey
