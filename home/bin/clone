@@ -7,7 +7,7 @@ case "$1" in
 esac
 pathsubst()
 {
-    OLDFULLPATH="$FULLPATH/xxx"
+    local OLDFULLPATH="$FULLPATH/xxx"
     while test "$OLDFULLPATH" != "$FULLPATH"; do
         OLDFULLPATH="$FULLPATH"
         FULLPATH="$(sed -e "$1" <<< "$FULLPATH")"
@@ -22,4 +22,4 @@ if test -z "$GITPATH"; then
     echo >&2 "invalid pattern $1"
     false
 fi
-git clone "$GITPATH" "$FULLPATH"
+exec git clone "$GITPATH" "$FULLPATH"
