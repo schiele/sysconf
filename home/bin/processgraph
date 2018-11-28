@@ -1,27 +1,25 @@
 #!/bin/bash
 dotfile="$1"
 shift
-logfile=$(mktemp)
-strace -f -o "$logfile" -s 64000 -v -e trace=process "$@"
+logfile=$(mktemp -d)
+strace -ff -o "$logfile/s" -s 64000 -v -e trace=process "$@"
 set -eu
 exec 3> "$dotfile"
 echo >&3 'digraph cip {'
 echo >&3 'overlap=false'
-for node in $(sed -e 's, .*$,,' "$logfile" | sort -u); do
-    rv=$(sed -ne 's,^'"$node"' *+++ exited with \([0-9]*\) +++$,\1,p' "$logfile")
+for file in "$logfile"/s.*; do
+    node="${file/*.}"
+    rv=$(sed -ne 's,^+++ exited with \([0-9]*\) +++$,\1,p' "$file")
     case "$rv" in
         '') color=grey;;
         0) color=green;;
         *) color=red;;
     esac
     echo >&3 '"'"$node"'" [label="'"$node"'\n'"$(
-            sed -ne 's,^'"$node"' *execve("[^"]*/\([^"/]*\)".*$,\1,p' "$logfile" |
+            sed -ne 's,^execve("[^"]*/\([^"/]*\)".*= 0$,\1,p' "$file" |
             tr '\n' / | sed -e 's,/$,,;s,/,\\n,g'
         )"'\n'"$rv"'", style=filled, color='"$color"']'
 done
-sed >&3 -ne '
-    s/^\([0-9]*\) *\(\(clone\)\|\(fork\)\|\(vfork\)\)(.*) *= \([0-9]*\)$/"\1"->"\6"/p
-    s/^\([0-9]*\) *<\.\.\. \(\(clone\)\|\(fork\)\|\(vfork\)\) resumed>.*) *= \([0-9]*\)$/"\1"->"\6"/p
-    ' "$logfile"
+grep ^ "$logfile"/s.* | sed >&3 -ne 's,^'"$logfile"'/s.\([0-9]*\):\(\(clone\)\|\(fork\)\|\(vfork\)\)(.*) *= \([0-9]*\)$,"\1"->"\6",p'
 echo >&3 '}'
-rm "$logfile"
+rm -rf "$logfile"
