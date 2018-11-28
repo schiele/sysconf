@@ -20,6 +20,6 @@ for file in "$logfile"/s.*; do
             tr '\n' / | sed -e 's,/$,,;s,/,\\n,g'
         )"'\n'"$rv"'", style=filled, color='"$color"']'
 done
-grep ^ "$logfile"/s.* | sed >&3 -ne 's,^'"$logfile"'/s.\([0-9]*\):\(\(clone\)\|\(fork\)\|\(vfork\)\)(.*) *= \([0-9]*\)$,"\1"->"\6",p'
+grep -H ^ "$logfile"/s.* | sed >&3 -ne 's,^'"$logfile"'/s.\([0-9]*\):\(\(clone\)\|\(fork\)\|\(vfork\)\)(.*) *= \([0-9]*\)$,"\1"->"\6",p'
 echo >&3 '}'
 rm -rf "$logfile"
