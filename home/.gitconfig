@@ -12,10 +12,18 @@
 	insteadOf = github:
 	insteadOf = https://github.com/
 	insteadOf = git://github.com/
+[url "git@gitlab.com:"]
+	insteadOf = gitlab:
+	insteadOf = https://gitlab.com/
+	insteadOf = git://gitlab.com/
 [url "git@gitlab.kitware.com:"]
 	insteadOf = kitware:
 	insteadOf = https://gitlab.kitware.com/
 	insteadOf = git://gitlab.kitware.com/
+[url "git@pagure.io:"]
+	insteadOf = pagure:
+	insteadOf = https://pagure.io/
+	insteadOf = git://pagure.io/
 [url "git://gcc.gnu.org/git/"]
 	insteadOf = gcc:
 [url "git://source.winehq.org/git/"]
@@ -26,3 +34,5 @@
 	insteadOf = sourceware:
 [url "https://gerrit.googlesource.com/"]
 	insteadOf = googlesource:
+[protocol]
+	version = 2

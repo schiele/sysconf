@@ -15,7 +15,7 @@ for file in "$logfile"/s.*; do
         0) color=green;;
         *) color=red;;
     esac
-    echo >&3 '"'"$node"'" [label="'"$node"'\n'"$(
+    echo >&3 '"'"$node"'" [label="\N\n'"$(
             sed -ne 's,^\(\(execve\)\|\(execveat\)\)("[^"]*/\([^"/]*\)".*= 0$,\4,p' "$file" |
             tr '\n' / | sed -e 's,/$,,;s,/,\\n,g'
         )"'\n'"$rv"'", style=filled, color='"$color"']'

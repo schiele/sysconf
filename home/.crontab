@@ -1,2 +1,4 @@
-*/5 5-21 * * *	PATH=~/bin:$PATH gitmap fetch >> ~/cronlog 2>&1
-0 22 * * *	PATH=~/bin:$PATH gitmap echo gc >> ~/cronlog 2>&1
+*/5 5-21 * * 1-5	PATH=~/bin:$PATH gitmap fetch >> ~/cronlog 2>&1
+0 22 * * 0-4	PATH=~/bin:$PATH gitmap echo gc >> ~/cronlog 2>&1
+0 22 * * 5	du -a ~ | sort -nr > ~/.dulog
+0 22 * * 6	PATH=~/bin:$PATH gitmap echo gca >> ~/cronlog 2>&1
