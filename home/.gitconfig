@@ -12,27 +12,55 @@
 	insteadOf = github:
 	insteadOf = https://github.com/
 	insteadOf = git://github.com/
+	insteadOf = git@github.com:
+	insteadOf = ssh://git@github.com/
 [url "git@gitlab.com:"]
 	insteadOf = gitlab:
 	insteadOf = https://gitlab.com/
 	insteadOf = git://gitlab.com/
+	insteadOf = git@gitlab.com:
+	insteadOf = ssh://git@gitlab.com/
 [url "git@gitlab.kitware.com:"]
 	insteadOf = kitware:
 	insteadOf = https://gitlab.kitware.com/
 	insteadOf = git://gitlab.kitware.com/
+	insteadOf = git@gitlab.kitware.com:
+	insteadOf = ssh://git@gitlab.kitware.com/
 [url "git@pagure.io:"]
 	insteadOf = pagure:
 	insteadOf = https://pagure.io/
 	insteadOf = git://pagure.io/
+	insteadOf = git@pagure.io:
+	insteadOf = ssh://git@pagure.io/
+[url "git://git.savannah.gnu.org/"]
+	insteadOf = savannah:
+	insteadOf = http://git.sv.gnu.org/r/
+	insteadOf = http://git.sv.gnu.org/git/
+	insteadOf = http://git.savannah.gnu.org/r/
+	insteadOf = http://git.savannah.gnu.org/git/
+	insteadOf = https://git.sv.gnu.org/r/
+	insteadOf = https://git.sv.gnu.org/git/
+	insteadOf = https://git.savannah.gnu.org/r/
+	insteadOf = https://git.savannah.gnu.org/git/
+	insteadOf = git://git.sv.gnu.org/
+	insteadOf = git://git.savannah.gnu.org/
+	insteadOf = schiele@git.sv.gnu.org:/srv/git/
+	insteadOf = schiele@git.savannah.gnu.org:/srv/git/
+	insteadOf = ssh://schiele@git.sv.gnu.org/srv/git/
+	insteadOf = ssh://schiele@git.savannah.gnu.org/srv/git/
 [url "git://gcc.gnu.org/git/"]
 	insteadOf = gcc:
+	insteadOf = git://gcc.gnu.org/git/
 [url "git://source.winehq.org/git/"]
 	insteadOf = winehq:
 	insteadOf = http://source.winehq.org/git/
 	insteadOf = https://source.winehq.org/git/
+	insteadOf = git://source.winehq.org/git/
 [url "git://sourceware.org/git/"]
 	insteadOf = sourceware:
+	insteadOf = git://sourceware.org/git/
 [url "https://gerrit.googlesource.com/"]
 	insteadOf = googlesource:
+	insteadOf = https://gerrit.googlesource.com/
 [protocol]
 	version = 2

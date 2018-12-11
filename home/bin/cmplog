@@ -1,0 +1,6 @@
+#!/bin/bash
+H1="$1"
+H2="$2"
+shift 2
+COLUMNS=$(tput cols)
+exec diff -y -W $COLUMNS <(git log "$H1" "$@") <(git log "$H2" "$@")
