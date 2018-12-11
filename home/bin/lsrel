@@ -29,18 +29,25 @@ python_all_rel()
     mycurl https://www.python.org/downloads/ |
     sed -ne 's,.*<span class="release-number"><a href="/downloads/release/python-.*/">Python \(.*\)</a></span>.*,\1,p'
 }
+doxygen_cur_rel()
+{
+    mycurl http://www.doxygen.nl/download.html |
+    sed -ne 's,.*"http://doxygen.nl/files/doxygen-\(1.8.14\)-setup.exe".*,\1,p'
+}
 checkver()
 {
     CUR=$(${1}_cur_rel)
+    printf '%-16s%-8s' "$1:" "$2"
     if test "$CUR" = "$2"; then
-	echo -e "$1:\t$2\t\e[92m(current)\e[39m"
+	echo -e "\e[92m(current)\e[39m"
     else
-	echo -e "$1:\t$2\t\e[91m(current: $CUR)\e[39m"
+	echo -e "\e[91m(current: $CUR)\e[39m"
     fi
 }
 checkver putty 0.70
 checkver winscp 5.13.4
 checkver cmake 3.13.1
+checkver doxygen 1.8.14
 
 #for i in $(python_all_rel); do
 #echo $i

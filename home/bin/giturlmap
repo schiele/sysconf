@@ -1,0 +1,39 @@
+#!/bin/bash
+set -eu
+newsection()
+{
+    if test "$FOUND"; then
+        if test -z "$DEFAULT"; then
+            echo "The following URLs have no default:"
+            for url in $FOUND; do
+                echo "$url"
+            done
+            false
+        fi
+        for url in $FOUND; do
+            git config --global --remove-section url."$url" 2>/dev/null || true
+        done
+        for url in $FOUND; do
+            git config --global --add url."$DEFAULT".insteadOf "$url"
+        done
+    fi
+    FOUND=
+    DEFAULT=
+}
+FOUND=
+DEFAULT=
+for file in "$@"; do
+    newsection
+    while IFS= read LINE; do
+        case "$LINE" in
+            '') newsection;;
+            '- '*) FOUND="$FOUND ${LINE/- }:";;
+            '  '*) FOUND="$FOUND ${LINE/  }";;
+            '* '*) DEFAULT=${LINE/\* }
+                   FOUND="$FOUND ${LINE/\* }";;
+            *) echo "don't understand: $LINE"
+               false;;
+        esac
+    done < "$file"
+    newsection
+done
