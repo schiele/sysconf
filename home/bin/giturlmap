@@ -14,7 +14,7 @@ newsection()
             git config --global --remove-section url."$url" 2>/dev/null || true
         done
         for url in $FOUND; do
-            git config --global --add url."$DEFAULT".insteadOf "$url"
+            git config --global --replace-all url."$DEFAULT".insteadOf "$url" "$url"
         done
     fi
     FOUND=
@@ -27,10 +27,10 @@ for file in "$@"; do
     while IFS= read LINE; do
         case "$LINE" in
             '') newsection;;
-            '- '*) FOUND="$FOUND ${LINE/- }:";;
-            '  '*) FOUND="$FOUND ${LINE/  }";;
+            '- '*) FOUND="$FOUND $(eval echo ${LINE/- }:)";;
+            '  '*) FOUND="$FOUND $(eval echo ${LINE/  })";;
             '* '*) DEFAULT=${LINE/\* }
-                   FOUND="$FOUND ${LINE/\* }";;
+                   FOUND="$FOUND $(eval echo ${LINE/\* })";;
             *) echo "don't understand: $LINE"
                false;;
         esac
