@@ -10,3 +10,7 @@
 	decorate = short
 [protocol]
 	version = 2
+[blame]
+	coloring = highlightRecent
+[color "blame"]
+	highlightRecent = 0 21,5242880 minutes ago,0 27,2621440 minutes ago,0 33,1310720 minutes ago,0 39,655360 minutes ago,0 45,327680 minutes ago,0 51,163840 minutes ago,0 50,81920 minutes ago,0 49,40960 minutes ago,0 48,20480 minutes ago,0 47,10240 minutes ago,0 46,5120 minutes ago,0 82,2560 minutes ago,0 118,1280 minutes ago,0 154,640 minutes ago,0 190,320 minutes ago,0 226,160 minutes ago,0 220,80 minutes ago,0 214,40 minutes ago,0 208,20 minutes ago,0 202,10 minutes ago,0 196

@@ -1,6 +1,11 @@
 #!/bin/bash
 set -eu
 GITROOT=~/git
+if test $# = 2; then
+    WHERE="$2"
+else
+    WHERE="$1"
+fi
 case "$1" in
     /*) FULLPATH="$1/";;
     *)  FULLPATH="$PWD/$1/";;
@@ -22,4 +27,24 @@ if test -z "$GITPATH"; then
     echo >&2 "invalid pattern $1"
     false
 fi
-exec git clone "$GITPATH" "$FULLPATH"
+
+echo -n 'Finding similarities... '
+HASHES=$(mktemp)
+git ls-remote "$GITPATH" | awk '{print $1}' | sort -u > "$HASHES"
+SIMILAR=$(
+    find "$GITROOT" -name .git |
+    while read DIR; do
+        SIMILARITY=$((
+            git ls-remote $DIR | awk '{print $1}' | sort -u
+            cat "$HASHES"
+        ) | sort | uniq -d | wc -l)
+        test "$SIMILARITY" = 0 || echo $SIMILARITY $DIR
+    done | sort -nr | awk '{print $2}' | head -n 1
+)
+rm -rf "$HASHES"
+if test "$SIMILAR"; then
+    echo "$SIMILAR"
+    exec git clone --reference "$SIMILAR" --dissociate "$GITPATH" "$WHERE"
+fi
+echo none
+exec git clone "$GITPATH" "$WHERE"
