@@ -32,7 +32,7 @@ python_all_rel()
 doxygen_cur_rel()
 {
     mycurl http://www.doxygen.nl/download.html |
-    sed -ne 's,.*"http://doxygen.nl/files/doxygen-\(1.8.14\)-setup.exe".*,\1,p'
+    sed -ne 's,.*"http://doxygen.nl/files/doxygen-\([0-9.]*\)-setup.exe".*,\1,p'
 }
 checkver()
 {
@@ -45,9 +45,9 @@ checkver()
     fi
 }
 checkver putty 0.70
-checkver winscp 5.13.4
-checkver cmake 3.13.1
-checkver doxygen 1.8.14
+checkver winscp 5.13.7
+checkver cmake 3.13.3
+checkver doxygen 1.8.15
 
 #for i in $(python_all_rel); do
 #echo $i
