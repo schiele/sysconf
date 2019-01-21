@@ -2,35 +2,45 @@
 set -eu
 GITROOT=~/git
 if test $# = 2; then
-    WHERE="$2"
+    GITPATH="$1"
+    GITOPTS=("$GITPATH" "$2")
 else
-    WHERE="$1"
-fi
-case "$1" in
-    /*) FULLPATH="$1/";;
-    *)  FULLPATH="$PWD/$1/";;
-esac
-pathsubst()
-{
-    local OLDFULLPATH="$FULLPATH/xxx"
-    while test "$OLDFULLPATH" != "$FULLPATH"; do
-        OLDFULLPATH="$FULLPATH"
-        FULLPATH="$(sed -e "$1" <<< "$FULLPATH")"
-    done
-}
-pathsubst 's,/\./,/,'
-pathsubst 's,//,/,'
-pathsubst 's,/[^/]*/\.\./,/,'
-pathsubst 's,/$,,'
-GITPATH="$(sed -ne "s,^$GITROOT/\([^/]*\)/\(.*\)$,\1:\2,p" <<< "$FULLPATH")"
-if test -z "$GITPATH"; then
-    echo >&2 "invalid pattern $1"
-    false
+    case "$1" in
+        *:*)
+            GITPATH="$1"
+            GITOPTS=("$GITPATH")
+            ;;
+        *)
+            case "$1" in
+                /*) FULLPATH="$1/";;
+                *)  FULLPATH="$PWD/$1/";;
+            esac
+            pathsubst()
+            {
+                local OLDFULLPATH="$FULLPATH/xxx"
+                while test "$OLDFULLPATH" != "$FULLPATH"; do
+                    OLDFULLPATH="$FULLPATH"
+                    FULLPATH="$(sed -e "$1" <<< "$FULLPATH")"
+                done
+            }
+            pathsubst 's,/\./,/,'
+            pathsubst 's,//,/,'
+            pathsubst 's,/[^/]*/\.\./,/,'
+            pathsubst 's,/$,,'
+            GITPATH="$(sed -ne "s,^$GITROOT/\([^/]*\)/\(.*\)$,\1:\2,p" <<< "$FULLPATH")"
+            if test -z "$GITPATH"; then
+                echo >&2 "invalid pattern $1"
+                false
+            fi
+            GITOPTS=("$GITPATH" "$1")
+            ;;
+    esac
 fi
 
-echo -n 'Finding similarities... '
 HASHES=$(mktemp)
 git ls-remote "$GITPATH" | awk '{print $1}' | sort -u > "$HASHES"
+test ${PIPESTATUS[0]} = 0
+echo -n 'Finding similarities... '
 SIMILAR=$(
     find "$GITROOT" -name .git |
     while read DIR; do
@@ -43,8 +53,9 @@ SIMILAR=$(
 )
 rm -rf "$HASHES"
 if test "$SIMILAR"; then
+    GITOPTS=(--reference "$SIMILAR" --dissociate "${GITOPTS[@]}")
     echo "$SIMILAR"
-    exec git clone --reference "$SIMILAR" --dissociate "$GITPATH" "$WHERE"
+else
+    echo none
 fi
-echo none
-exec git clone "$GITPATH" "$WHERE"
+exec git clone "${GITOPTS[@]}"
