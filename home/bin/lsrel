@@ -11,7 +11,9 @@ winscp_all_rel()
 winscp_cur_rel()
 {
     winscp_all_rel |
-    grep -v ' ' |
+    grep -v RC |
+    grep -v beta |
+    grep -v 'not released' |
     head -n 1
 }
 putty_cur_rel()
@@ -44,10 +46,14 @@ checkver()
 	echo -e "\e[91m(current: $CUR)\e[39m"
     fi
 }
-checkver putty 0.70
-checkver winscp 5.13.7
-checkver cmake 3.13.3
-checkver doxygen 1.8.15
+if test $# = 0; then
+    checkver putty 0.70
+    checkver winscp 5.13.7
+    checkver cmake 3.13.4
+    checkver doxygen 1.8.15
+else
+    "$@"
+fi
 
 #for i in $(python_all_rel); do
 #echo $i

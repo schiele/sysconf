@@ -1,0 +1,71 @@
+#!/bin/bash
+_goto_err()
+{
+    echo >&2 "$1"
+    false
+}
+_goto_usage()
+{
+    _goto_err "Usage: goto [-s|-d] [LOCATION]"
+}
+_goto_lst()
+{
+    local goto_key
+    for goto_key in "${!LOCATIONS[@]}"; do
+        printf "%-${goto_maxlen}s %s\n" "$goto_key" "${LOCATIONS[$goto_key]}"
+    done | sort
+}
+_goto_read()
+{
+    local goto_key
+    local goto_location
+    test -r ~/.goto.lst &&
+    while read goto_key goto_location; do
+        LOCATIONS[$goto_key]="$goto_location"
+        test ${#goto_key} -gt $goto_maxlen && goto_maxlen=${#goto_key}
+    done < ~/.goto.lst
+}
+_goto_write()
+{
+    _goto_lst > ~/.goto.lst.tmp
+    mv ~/.goto.lst.tmp ~/.goto.lst
+}
+_goto_completions()
+{
+    local goto_maxlen=0
+    declare -A LOCATIONS
+    _goto_read
+    case "$COMP_CWORD" in
+        1)  COMPREPLY=($(compgen -W "-s -d ${!LOCATIONS[*]}" -- "${COMP_WORDS[1]}"));;
+        2)  if test "${COMP_WORDS[1]}" = '-d'; then
+                COMPREPLY=($(compgen -W "${!LOCATIONS[*]}" -- "${COMP_WORDS[2]}"))
+            elif test "${COMP_WORDS[1]}" = '-s'; then
+                COMPREPLY=($(compgen -W "${PWD/*\/}" -- "${COMP_WORDS[2]}"))
+            fi
+            ;;
+    esac
+}
+complete -F _goto_completions goto
+goto()
+{
+    local goto_maxlen=0
+    declare -A LOCATIONS
+    _goto_read
+    if test $# = 0; then
+        _goto_lst
+    elif test $# = 1; then
+        if test "${LOCATIONS[$1]}"; then
+            cd "${LOCATIONS[$1]}"
+        else
+            _goto_err "Unknown location: $1"
+        fi
+    elif test $# = 2 -a "$1" = '-s'; then
+        LOCATIONS[$2]="$PWD"
+        _goto_write
+    elif test $# = 2 -a "$1" = '-d'; then
+        unset LOCATIONS[$2]
+        _goto_write
+    else
+        _goto_usage
+    fi
+}
