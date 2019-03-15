@@ -6,7 +6,8 @@ mycurl()
 winscp_all_rel()
 {
     mycurl https://winscp.net/eng/docs/history |
-    sed -ne 's, *<h2 id="[0-9.]*">\([^<]*\)</h2>,\1,p'
+    sed -ne 's, *<h2 id="[0-9.]*">\([^<]*\)</h2>,\1,p' |
+    sed -e 's, (hotfix),,'
 }
 winscp_cur_rel()
 {
@@ -36,6 +37,11 @@ doxygen_cur_rel()
     mycurl http://www.doxygen.nl/download.html |
     sed -ne 's,.*"http://doxygen.nl/files/doxygen-\([0-9.]*\)-setup.exe".*,\1,p'
 }
+hub_cur_rel()
+{
+    mycurl https://github.com/github/hub/releases/latest |
+    sed -ne 's,.*https://github.com/github/hub/releases/tag/v\(.*\)".*,\1,p'
+}
 checkver()
 {
     CUR=$(${1}_cur_rel)
@@ -48,9 +54,10 @@ checkver()
 }
 if test $# = 0; then
     checkver putty 0.70
-    checkver winscp 5.13.7
-    checkver cmake 3.13.4
+    checkver winscp 5.13.8
+    checkver cmake 3.14.0
     checkver doxygen 1.8.15
+    checkver hub 2.10.0
 else
     "$@"
 fi
