@@ -53,11 +53,11 @@ checkver()
     fi
 }
 if test $# = 0; then
-    checkver putty 0.70
-    checkver winscp 5.13.8
-    checkver cmake 3.14.0
-    checkver doxygen 1.8.15
-    checkver hub 2.10.0
+    checkver putty 0.72
+    checkver winscp 5.15.3
+    checkver cmake 3.15.2
+    checkver doxygen 1.8.16
+    checkver hub 2.12.3
 else
     "$@"
 fi

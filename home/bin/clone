@@ -37,25 +37,6 @@ else
     esac
 fi
 
-HASHES=$(mktemp)
-git ls-remote "$GITPATH" | awk '{print $1}' | sort -u > "$HASHES"
-test ${PIPESTATUS[0]} = 0
-echo -n 'Finding similarities... '
-SIMILAR=$(
-    find "$GITROOT" -name .git |
-    while read DIR; do
-        SIMILARITY=$((
-            git ls-remote $DIR | awk '{print $1}' | sort -u
-            cat "$HASHES"
-        ) | sort | uniq -d | wc -l)
-        test "$SIMILARITY" = 0 || echo $SIMILARITY $DIR
-    done | sort -nr | awk '{print $2}' | head -n 1
-)
-rm -rf "$HASHES"
-if test "$SIMILAR"; then
-    GITOPTS=(--reference "$SIMILAR" --dissociate "${GITOPTS[@]}")
-    echo "$SIMILAR"
-else
-    echo none
-fi
-exec git clone "${GITOPTS[@]}"
+REFERENCE=$(gitcacheread "$GITPATH")
+git clone --reference "$REFERENCE" --dissociate "${GITOPTS[@]}"
+rm -rf "$REFERENCE"

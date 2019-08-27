@@ -1,0 +1,19 @@
+#!/bin/bash
+set -eux
+nopull=0
+if test "$1" = --no-pull; then
+    nopull=1
+    shift
+fi
+WS=$(mktemp -d)
+cd "$WS"
+gitcache clone --mirror "$1" bare
+cd bare
+gitcache write
+if test "$nopull" = 1; then
+    git for-each-ref --format='delete %(refname)' refs/pull/ |
+    git update-ref --stdin
+fi
+git push --mirror "$2"
+cd
+rm -rf "$WS"

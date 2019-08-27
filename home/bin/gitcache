@@ -1,0 +1,78 @@
+#!/bin/bash
+set -eu
+GITCACHE=~/.gitcache
+gitcache-init()
+{
+    if ! test -d "$GITCACHE"; then
+    (
+        mkdir -p "$GITCACHE"
+        cd "$GITCACHE"
+        git init --bare
+    )
+    fi
+}
+gitcache-read()
+{
+    gitcache-init
+    loc=$(mktemp -p "$GITCACHE" -d)
+    what=$(
+        git ls-remote --refs "$1" |
+        while read hash ref; do
+            git --git-dir "$GITCACHE" cat-file -t $hash >/dev/null 2>/dev/null &&
+            echo "$hash:$ref"
+        done
+    )
+    git clone --bare "$GITCACHE" "$loc"
+    cd "$loc"
+    if test "$what"; then
+        echo "$what" | xargs git fetch "$GITCACHE"
+    fi
+    echo "$loc"
+}
+gitcache-write()
+{
+    gitcache-init
+    case $# in
+        0) pattern='*';;
+        1) cd "$1"; pattern='*';;
+        2) cd "$1"; pattern="$2";;
+        *) echo >&2 "Too many options."; false;;
+    esac
+    commits=$(
+        diff <(
+            git ls-remote . "$pattern" | awk '{print $1}' | sort -u
+        ) <(
+            git ls-remote "$GITCACHE" | awk '{print $1}' | sort -u
+        ) |
+        sed -ne 's/^< //p'
+    )
+    what=$(
+        echo "$commits" |
+        sed -e 's,^\(........................................\)$,\1:refs/persistent/\1,'
+    )
+    if test "$what"; then
+        echo "$what" | xargs git push "$GITCACHE"
+    fi
+}
+gitcache-clone()
+{
+    for GITPATH in "$@"; do
+        case "$GITPATH" in
+            -*) ;;
+            *) break;;
+        esac
+    done
+    REFERENCE=$(gitcache-read "$GITPATH")
+    git clone --reference "$REFERENCE" --dissociate "$@"
+    rm -rf "$REFERENCE"
+}
+case "$(basename $0)" in
+    gitcache-*)
+        "$(basename $0)" "$@"
+        ;;
+    *)
+        task="$1"
+        shift
+        gitcache-$task "$@"
+        ;;
+esac

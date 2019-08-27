@@ -18,6 +18,7 @@ fetch()
     cd "$BASEDIR/$1"
     git fetch --all -p -q ||
     echo "ERROR at $1"
+    gitcache write
 }
 gc()
 {
@@ -31,7 +32,7 @@ gca()
     git gc --aggressive ||
     echo "ERROR at $1"
 }
-for dir in $(cd "$BASEDIR" && find * -name .git | sed -e 's,/\.git$,,'); do
+for dir in ../.gitcache $(cd "$BASEDIR" && find * -name .git | sed -e 's,/\.git$,,'); do
     for com in "$@"; do
         "$com" "$dir" #2>&1 | logify "$dir:"
     done
