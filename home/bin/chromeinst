@@ -1,0 +1,41 @@
+#!/bin/bash
+set -eu
+rpm=google-chrome-stable_current_x86_64.rpm
+url="https://dl.google.com/linux/direct/$rpm"
+destdir=~/tools/chrome
+locdir=~/.local
+optdir=/opt/google/chrome
+confdir=~/.config/$(basename $0)
+mkdir -p "$confdir"
+etag=$(sed -ne 's/^etag: //p' "$confdir/$rpm.head" 2>/dev/null || echo '"1234567890"')
+curl -s -D "$confdir/$rpm.head" -o "$confdir/$rpm" -H "If-None-Match: $etag" "$url"
+version=$(rpm -qp --nosignature "$confdir/$rpm")
+if test -d "$destdir/$version"; then
+	echo 'Already up-to-date!'
+	exit 0
+fi
+tmpdir="$destdir/tmp"
+rm -rf "$tmpdir"
+mkdir -p "$tmpdir"
+rpm2cpio "$confdir/$rpm" | cpio -imdD "$tmpdir"
+patchfile()
+{
+	sed -i -e "
+		s,$optdir,$destdir/current,
+		s,/usr/bin/google-chrome-stable,$destdir/current/google-chrome,
+		" "$@"
+}
+for file in \
+	share/gnome-control-center/default-apps/google-chrome.xml \
+	share/appdata/google-chrome.appdata.xml \
+	share/applications/google-chrome.desktop; do
+	patchfile "$tmpdir/usr/$file"
+	mkdir -p $(dirname "$locdir/$file")
+	mv "$tmpdir/usr/$file" "$locdir/$file"
+done
+patchfile "$tmpdir$optdir/default-app-block"
+mv "$tmpdir$optdir" "$destdir/$version"
+rm -rf "$tmpdir"
+rm -rf "$destdir/current"
+ln -s "$version" "$destdir/current"
+echo "Installation of $version complete!"
