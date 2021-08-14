@@ -4,10 +4,12 @@ channels='stable beta unstable'
 destdir=~/tools/chrome
 locdir=~/.local
 confdir=~/.config/$(basename $0)
+url="https://dl.google.com/linux/direct"
+optdir="/opt/google"
 patchfile()
 {
 	sed -i -e "
-		s,$optdir,$destdir/$type,
+		s,$optdir/$tname,$destdir/$type,
 		s,/usr/bin/google-chrome-$type,$destdir/$type/google-chrome,
 		" "$@"
 }
@@ -16,14 +18,13 @@ mkdir -p "$confdir"
 rm -rf "$tmpdir"
 for type in $channels; do
 	case "$type" in
-		stable) tsuffix=;;
-		*) tsuffix=-$type;;
+		stable) tname=chrome;;
+		*) tname=chrome-$type;;
 	esac
 	rpm="google-chrome-${type}_current_x86_64.rpm"
-	url="https://dl.google.com/linux/direct/$rpm"
-	optdir="/opt/google/chrome$tsuffix"
-	etag=$(sed -ne 's/^etag: //p' "$confdir/$rpm.head" 2>/dev/null || echo '"1234567890"')
-	curl -s -D "$confdir/$rpm.head" -o "$confdir/$rpm" -H "If-None-Match: $etag" "$url"
+	etag=$(sed -ne 's/^etag: //p' "$confdir/$rpm.head" 2>/dev/null)
+	curl -s -D "$confdir/$rpm.head" -o "$confdir/$rpm" \
+		-H "If-None-Match: ${etag:-'"000000"'}" "$url/$rpm"
 	version=$(rpm -qp --nosignature "$confdir/$rpm")
 	if test -d "$destdir/$version"; then
 		echo "$type already up-to-date!"
@@ -32,16 +33,17 @@ for type in $channels; do
 	mkdir -p "$tmpdir"
 	rpm2cpio "$confdir/$rpm" | cpio -imdD "$tmpdir"
 	for file in \
-		share/gnome-control-center/default-apps/google-chrome$tsuffix.xml \
-		share/appdata/google-chrome$tsuffix.appdata.xml \
-		share/applications/google-chrome$tsuffix.desktop; do
+		share/gnome-control-center/default-apps/google-$tname.xml \
+		share/appdata/google-$tname.appdata.xml \
+		share/applications/google-$tname.desktop; do
 		patchfile "$tmpdir/usr/$file"
 		mkdir -p $(dirname "$locdir/$file")
 		mv "$tmpdir/usr/$file" "$locdir/$file"
 	done
-	patchfile "$tmpdir$optdir/default-app-block"
-	test -z "$tsuffix" || ln -sf "google-chrome$tsuffix" "$tmpdir$optdir/google-chrome"
-	mv "$tmpdir$optdir" "$destdir/$version"
+	patchfile "$tmpdir$optdir/$tname/default-app-block"
+	test "$tname" = chrome ||
+	        ln -sf "google-$tname" "$tmpdir$optdir/$tname/google-chrome"
+	mv "$tmpdir$optdir/$tname" "$destdir/$version"
 	rm -rf "$tmpdir" "$destdir/$type"
 	ln -s "$version" "$destdir/$type"
 	echo "Installation of $version complete!"
