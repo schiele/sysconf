@@ -1,0 +1,34 @@
+#!/bin/bash
+set -eu
+cd ~/sbcl
+if test $# = 0; then
+	git checkout master
+	git pull
+else
+	git checkout "$1" ||
+	git checkout "sbcl-$1"
+fi
+./generate-version.sh
+ver=$(sed -ne 's,"\(.*\)",\1,p' version.lisp-expr)
+destdir=~/tools/sbcl/"$ver"
+if test -d "$destdir"; then
+	echo "$ver is already installed."
+	exit 1
+fi
+exec 3>&1 4>&2 1> >(exec tee -a .build.log) 2>&1
+set -x
+PATH=~/tools/sbcl/master/bin:"$PATH" ./make.sh --prefix="$destdir"
+cd tests
+./run-tests.sh
+cd ../doc/manual
+make
+cd ../..
+./install.sh
+set +x
+exec 1>&3 2>&4 3>&- 4>&-
+mv .build.log "$destdir/"
+if test $# = 0; then
+	rm -f ~/tools/sbcl/master
+	ln -s "$ver" ~/tools/sbcl/master
+fi
+echo "$ver installed."
