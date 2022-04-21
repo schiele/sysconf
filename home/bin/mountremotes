@@ -1,0 +1,14 @@
+#!/bin/bash
+REMOTES=$(rclone listremotes | sed -ne 's,:$,,p')
+case ${0/*\/} in
+	u*)
+		for i in $REMOTES; do
+			fusermount -u ~/$i
+		done
+		;;
+	*)
+		for i in $REMOTES; do
+			rclone mount --daemon --vfs-cache-mode full $i: ~/$i
+		done
+		;;
+esac
