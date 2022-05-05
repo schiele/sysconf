@@ -1,0 +1,2 @@
+#!/bin/bash
+LD_LIBRARY_PATH=~/tools/libglvnd/current exec ~/tools/prusaslicer/current/bin/prusa-slicer "$@"
