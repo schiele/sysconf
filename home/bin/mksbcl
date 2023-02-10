@@ -9,7 +9,7 @@ else
 	git checkout "sbcl-$1"
 fi
 ./generate-version.sh
-ver=$(sed -ne 's,"\(.*\)",\1,p' version.lisp-expr)
+ver=$(sed -ne 's,"\(.*\)",\1,p' version.lisp-expr | tr '/' '_')
 destdir=~/tools/sbcl/"$ver"
 if test -d "$destdir"; then
 	echo "$ver is already installed."
