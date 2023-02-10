@@ -1,2 +1,12 @@
 #!/bin/bash
-LD_LIBRARY_PATH=~/tools/libglvnd/current exec ~/tools/prusaslicer/current/bin/prusa-slicer "$@"
+case $0 in
+	*alpha) VER=alpha;;
+	*) VER=stable;;
+esac
+if test "$1" = '--sw'; then
+	export LIBGL_ALWAYS_SOFTWARE=true
+	echo >&2 'Enabling Software rendering!'
+	shift
+fi
+export LD_LIBRARY_PATH=~/tools/libglvnd/current
+exec ~/tools/prusaslicer/$VER/bin/prusa-slicer "$@"

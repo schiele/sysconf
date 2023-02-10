@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eu
 channels='stable beta unstable'
+channels='stable'
 destdir=~/tools/chrome
 locdir=~/.local
 confdir=~/.config/$(basename $0)
