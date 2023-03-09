@@ -1,2 +1,6 @@
 #!/bin/bash
-LD_PRELOAD=/usr/lib64/libX11.so.6 exec ~/tools/cura/current "$@"
+case "$0" in
+	*beta) ver=beta;;
+	*) ver=stable;;
+esac
+LD_PRELOAD=/usr/lib64/libX11.so.6 exec ~/tools/cura/$ver "$@"
