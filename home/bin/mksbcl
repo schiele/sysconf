@@ -15,6 +15,7 @@ if test -d "$destdir"; then
 	echo "$ver is already installed."
 	exit 1
 fi
+export SBCL_MAKE_JOBS=-j$(nproc)
 exec 3>&1 4>&2 1> >(exec tee .build.log) 2>&1
 set -x
 PATH=~/tools/sbcl/master/bin:"$PATH" ./make.sh --prefix="$destdir"
