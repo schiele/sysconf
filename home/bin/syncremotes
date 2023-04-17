@@ -1,4 +1,4 @@
 #!/bin/bash
 for i in Documents Music Pictures; do
 	rclone bisync --verbose ~/$i onedrive:$i
-done
+done 2>&1 | tee ~/log/syncremotes.$(date -Is)
