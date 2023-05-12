@@ -1,0 +1,55 @@
+#!/bin/bash
+declare -A VERSION LINKS
+PACKAGES="cereal-dev CGAL-dev OpenCSG-dev qscintilla-dev"
+VERSION[cereal-dev]=1.3.2-7
+LINKS[cereal-dev]="/usr/include/cereal /usr/lib64/cmake/cereal"
+VERSION[CGAL-dev]=5.5.1-17
+LINKS[CGAL-dev]="/usr/include/CGAL /usr/lib64/cmake/CGAL"
+VERSION[OpenCSG-dev]=1.4.2-6
+LINKS[OpenCSG-dev]="/usr/include/opencsg.h /usr/lib64/libopencsg.so"
+VERSION[qscintilla-dev]=2.14.0-32
+LINKS[qscintilla-dev]="/usr/include/qt5/Qsci /usr/lib64/libqscintilla2_qt5.so /usr/lib64/qt5/mkspecs/features/qscintilla2.prf"
+
+DIR=~/devroot
+
+TODO=""
+echo checking...
+for p in $PACKAGES; do
+	echo " $p-${VERSION[$p]}"
+	FINDCMD="find $DIR/$p-${VERSION[$p]}"
+	for l in ${LINKS[$p]}; do
+		s="$DIR/$p-${VERSION[$p]}$l"
+		FINDCMD="$FINDCMD -path $s -prune -o"
+		if ! readlink -e $s >/dev/null; then
+			echo inconsistent entry: $s
+			exit 1
+		fi
+		if ! test -e $l; then
+			echo "  $l -> $s (new)"
+			TODO="$TODO
+sudo ln -s $s $l"
+		elif t=$(readlink $l); then
+			if ! test "$s" = "$t"; then
+				echo "  $l -> $s (was $t)"
+				TODO="$TODO
+sudo rm -f $l
+sudo ln -s $s $l"
+			else
+				echo "  $l -> $s (ok)"
+			fi
+		else
+			echo no link: $l
+			exit 1
+		fi
+	done
+	UNHANDLED=$($FINDCMD -not -type d -print)
+	if test "$UNHANDLED"; then
+		echo "unhandled: $UNHANDLED"
+		exit 1
+	fi
+done
+if test "$TODO"; then
+	echo "please execute:$TODO"
+else
+	echo "everything good"
+fi
