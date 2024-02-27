@@ -1,2 +1,2 @@
 #!/bin/bash
-LD_PRELOAD=/usr/lib64/libX11.so.6 exec ~/tools/freecad/current "$@"
+LD_PRELOAD=/usr/lib64/libX11.so.6:/usr/lib64/libdrm_amdgpu.so.1 exec ~/tools/freecad/current "$@"
