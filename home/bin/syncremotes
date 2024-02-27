@@ -1,4 +1,9 @@
 #!/bin/bash
-for i in Documents Music Pictures; do
+if test "$1"; then
+	DIRS="$1"
+else
+	DIRS="Documents Music Pictures"
+fi
+for i in $DIRS; do
 	rclone bisync --verbose ~/$i onedrive:$i
 done 2>&1 | tee ~/log/syncremotes.$(date -Is)
