@@ -1,22 +1,46 @@
 #!/bin/bash
 declare -A VERSION LINKS
-PACKAGES="cereal-dev CGAL-dev OpenCSG-dev qscintilla-dev"
-VERSION[cereal-dev]=1.3.2-7
+VERSION[c-blosc-dev]=1.21.4-1
+LINKS[c-blosc-dev]="/usr/lib64/libblosc.so /usr/lib64/pkgconfig/blosc.pc /usr/include/blosc-export.h /usr/include/blosc.h"
+VERSION[c-blosc-lib]=1.21.4-1
+LINKS[c-blosc-lib]="/usr/lib64/libblosc.so.1 /usr/lib64/libblosc.so.1.21.4"
 LINKS[cereal-dev]="/usr/include/cereal /usr/lib64/cmake/cereal"
-VERSION[CGAL-dev]=5.5.1-17
 LINKS[CGAL-dev]="/usr/include/CGAL /usr/lib64/cmake/CGAL"
-VERSION[OpenCSG-dev]=1.4.2-6
+VERSION[OCCT-dev]=7.7.1-9
+LINKS[OCCT-dev]="/usr/include/opencascade /usr/lib64/libTKV3d.so /usr/lib64/libTKXmlTObj.so /usr/lib64/libTKXDESTEP.so /usr/lib64/libTKXMesh.so /usr/lib64/libTKFillet.so /usr/lib64/libTKMath.so /usr/lib64/libTKVCAF.so /usr/lib64/libTKCDF.so /usr/lib64/libTKGeomAlgo.so /usr/lib64/libTKDCAF.so /usr/lib64/libTKLCAF.so /usr/lib64/libTKXDEDRAW.so /usr/lib64/libTKBRep.so /usr/lib64/libTKXDEIGES.so /usr/lib64/libTKG3d.so /usr/lib64/libTKTopAlgo.so /usr/lib64/libTKXCAF.so /usr/lib64/libTKHLR.so /usr/lib64/libTKOpenGlTest.so /usr/lib64/libTKBinXCAF.so /usr/lib64/libTKMeshVS.so /usr/lib64/libTKStdL.so /usr/lib64/libTKBinL.so /usr/lib64/libTKXDE.so /usr/lib64/libTKBinTObj.so /usr/lib64/libTKXDECascade.so /usr/lib64/libTKXmlXCAF.so /usr/lib64/libTKXSDRAW.so /usr/lib64/libTKPrim.so /usr/lib64/libTKOpenGl.so /usr/lib64/libTKGeomBase.so /usr/lib64/libTKBool.so /usr/lib64/libTKernel.so /usr/lib64/libTKVRML.so /usr/lib64/libTKOffset.so /usr/lib64/libTKTObj.so /usr/lib64/libTKExpress.so /usr/lib64/libTKTopTest.so /usr/lib64/libTKSTEPBase.so /usr/lib64/libTKBin.so /usr/lib64/libTKSTEPAttr.so /usr/lib64/libTKFeat.so /usr/lib64/libTKG2d.so /usr/lib64/libTKSTEP.so /usr/lib64/libTKXml.so /usr/lib64/libTKXmlL.so /usr/lib64/libTKBO.so /usr/lib64/libTKSTL.so /usr/lib64/libTKRWMesh.so /usr/lib64/libTKSTEP209.so /usr/lib64/libTKTObjDRAW.so /usr/lib64/libTKIGES.so /usr/lib64/libTKViewerTest.so /usr/lib64/libTKDraw.so /usr/lib64/libTKQADraw.so /usr/lib64/libTKShHealing.so /usr/lib64/libTKService.so /usr/lib64/libTKMesh.so /usr/lib64/libTKStd.so /usr/lib64/libTKCAF.so /usr/lib64/libTKXSBase.so /usr/lib64/cmake/opencascade"
+VERSION[OCCT-lib]=7.7.1-9
+LINKS[OCCT-lib]="/usr/lib64/libTKVRML.so.7.7 /usr/lib64/libTKTopAlgo.so.7.7.1 /usr/lib64/libTKCDF.so.7.7.1 /usr/lib64/libTKStd.so.7.7 /usr/lib64/libTKTObjDRAW.so.7.7.1 /usr/lib64/libTKXDESTEP.so.7.7 /usr/lib64/libTKGeomAlgo.so.7.7.1 /usr/lib64/libTKSTL.so.7.7 /usr/lib64/libTKQADraw.so.7.7.1 /usr/lib64/libTKG2d.so.7.7.1 /usr/lib64/libTKBin.so.7.7.1 /usr/lib64/libTKXSBase.so.7.7 /usr/lib64/libTKTopAlgo.so.7.7 /usr/lib64/libTKShHealing.so.7.7 /usr/lib64/libTKernel.so.7.7 /usr/lib64/libTKG3d.so.7.7 /usr/lib64/libTKDCAF.so.7.7.1 /usr/lib64/libTKDraw.so.7.7 /usr/lib64/libTKXSBase.so.7.7.1 /usr/lib64/libTKV3d.so.7.7 /usr/lib64/libTKBool.so.7.7.1 /usr/lib64/libTKFeat.so.7.7 /usr/lib64/libTKSTEPAttr.so.7.7.1 /usr/lib64/libTKExpress.so.7.7 /usr/lib64/libTKBin.so.7.7 /usr/lib64/libTKXDE.so.7.7 /usr/lib64/libTKVCAF.so.7.7.1 /usr/lib64/libTKMesh.so.7.7 /usr/lib64/libTKVRML.so.7.7.1 /usr/lib64/libTKOpenGlTest.so.7.7.1 /usr/lib64/libTKSTEP.so.7.7.1 /usr/lib64/libTKBool.so.7.7 /usr/lib64/libTKXDE.so.7.7.1 /usr/lib64/libTKViewerTest.so.7.7.1 /usr/lib64/libTKDraw.so.7.7.1 /usr/lib64/libTKCAF.so.7.7 /usr/lib64/libTKBO.so.7.7 /usr/lib64/libTKSTEPBase.so.7.7 /usr/lib64/libTKBinXCAF.so.7.7.1 /usr/lib64/libTKXMesh.so.7.7 /usr/lib64/libTKGeomAlgo.so.7.7 /usr/lib64/libTKXMesh.so.7.7.1 /usr/lib64/libTKOffset.so.7.7 /usr/lib64/libTKShHealing.so.7.7.1 /usr/lib64/libTKMeshVS.so.7.7.1 /usr/lib64/libTKIGES.so.7.7 /usr/lib64/libTKMath.so.7.7.1 /usr/lib64/libTKXmlXCAF.so.7.7 /usr/lib64/libTKOffset.so.7.7.1 /usr/lib64/libTKGeomBase.so.7.7.1 /usr/lib64/libTKBRep.so.7.7 /usr/lib64/libTKBinL.so.7.7 /usr/lib64/libTKXDEDRAW.so.7.7.1 /usr/lib64/libTKFillet.so.7.7 /usr/lib64/libTKSTEPAttr.so.7.7 /usr/lib64/libTKXDECascade.so.7.7 /usr/lib64/libTKService.so.7.7.1 /usr/lib64/libTKBinTObj.so.7.7 /usr/lib64/libTKIGES.so.7.7.1 /usr/lib64/libTKMeshVS.so.7.7 /usr/lib64/libTKCAF.so.7.7.1 /usr/lib64/libTKRWMesh.so.7.7 /usr/lib64/libTKStdL.so.7.7.1 /usr/lib64/libTKXmlTObj.so.7.7.1 /usr/lib64/libTKStdL.so.7.7 /usr/lib64/libTKHLR.so.7.7.1 /usr/lib64/libTKLCAF.so.7.7.1 /usr/lib64/libTKXmlL.so.7.7 /usr/lib64/libTKExpress.so.7.7.1 /usr/lib64/libTKViewerTest.so.7.7 /usr/lib64/libTKBinTObj.so.7.7.1 /usr/lib64/libTKXCAF.so.7.7.1 /usr/lib64/libTKTObj.so.7.7.1 /usr/lib64/libTKOpenGlTest.so.7.7 /usr/lib64/libTKernel.so.7.7.1 /usr/lib64/libTKSTL.so.7.7.1 /usr/lib64/libTKTopTest.so.7.7.1 /usr/lib64/libTKXDEDRAW.so.7.7 /usr/lib64/libTKG2d.so.7.7 /usr/lib64/libTKMesh.so.7.7.1 /usr/lib64/libTKTObjDRAW.so.7.7 /usr/lib64/libTKGeomBase.so.7.7 /usr/lib64/libTKLCAF.so.7.7 /usr/lib64/libTKPrim.so.7.7 /usr/lib64/libTKTObj.so.7.7 /usr/lib64/libTKV3d.so.7.7.1 /usr/lib64/libTKXDESTEP.so.7.7.1 /usr/lib64/libTKSTEP.so.7.7 /usr/lib64/libTKXmlXCAF.so.7.7.1 /usr/lib64/libTKMath.so.7.7 /usr/lib64/libTKDCAF.so.7.7 /usr/lib64/libTKXml.so.7.7.1 /usr/lib64/libTKHLR.so.7.7 /usr/lib64/libTKService.so.7.7 /usr/lib64/libTKFillet.so.7.7.1 /usr/lib64/libTKXDEIGES.so.7.7.1 /usr/lib64/libTKBRep.so.7.7.1 /usr/lib64/libTKTopTest.so.7.7 /usr/lib64/libTKCDF.so.7.7 /usr/lib64/libTKXmlTObj.so.7.7 /usr/lib64/libTKBO.so.7.7.1 /usr/lib64/libTKPrim.so.7.7.1 /usr/lib64/libTKVCAF.so.7.7 /usr/lib64/libTKStd.so.7.7.1 /usr/lib64/libTKXDECascade.so.7.7.1 /usr/lib64/libTKBinL.so.7.7.1 /usr/lib64/libTKQADraw.so.7.7 /usr/lib64/libTKXmlL.so.7.7.1 /usr/lib64/libTKRWMesh.so.7.7.1 /usr/lib64/libTKOpenGl.so.7.7.1 /usr/lib64/libTKSTEP209.so.7.7 /usr/lib64/libTKOpenGl.so.7.7 /usr/lib64/libTKFeat.so.7.7.1 /usr/lib64/libTKBinXCAF.so.7.7 /usr/lib64/libTKG3d.so.7.7.1 /usr/lib64/libTKSTEPBase.so.7.7.1 /usr/lib64/libTKXSDRAW.so.7.7 /usr/lib64/libTKXml.so.7.7 /usr/lib64/libTKXCAF.so.7.7 /usr/lib64/libTKXDEIGES.so.7.7 /usr/lib64/libTKXSDRAW.so.7.7.1 /usr/lib64/libTKSTEP209.so.7.7.1"
 LINKS[OpenCSG-dev]="/usr/include/opencsg.h /usr/lib64/libopencsg.so"
-VERSION[qscintilla-dev]=2.14.0-32
+LINKS[OpenCSG-lib]="/usr/lib64/libopencsg.so.1.4.2 /usr/lib64/libopencsg.so.1.4 /usr/lib64/libopencsg.so.1"
+#LINKS[qhull-staticdev]="/usr/lib64/libqhullstatic_r.a /usr/lib64/libqhullcpp.a /usr/lib64/libqhullstatic.a"
 LINKS[qscintilla-dev]="/usr/include/qt5/Qsci /usr/lib64/libqscintilla2_qt5.so /usr/lib64/qt5/mkspecs/features/qscintilla2.prf"
+LINKS[qscintilla-lib]="/usr/lib64/libqscintilla2_qt5.so.15 /usr/lib64/libqscintilla2_qt5.so.15.2.0 /usr/lib64/libqscintilla2_qt5.so.15.2"
+LINKS[qt6scxml]="/usr/lib64/qt6/mkspecs/features/qscxmlc.prf /usr/lib64/qt6/mkspecs/modules/qt_lib_scxml.pri /usr/lib64/qt6/mkspecs/modules/qt_lib_statemachine_private.pri /usr/lib64/qt6/mkspecs/modules/qt_lib_scxml_private.pri /usr/lib64/qt6/mkspecs/modules/qt_lib_statemachine.pri /usr/lib64/qt6/modules/StateMachine.json /usr/lib64/qt6/modules/Scxml.json /usr/lib64/qt6/metatypes/qt6scxml_relwithdebinfo_metatypes.json /usr/lib64/qt6/metatypes/qt6statemachine_relwithdebinfo_metatypes.json"
+LINKS[qt6scxml-dev]="/usr/lib64/libQt6Scxml.so /usr/lib64/libQt6StateMachine.prl /usr/lib64/pkgconfig/Qt6Scxml.pc /usr/lib64/pkgconfig/Qt6StateMachine.pc /usr/lib64/cmake/Qt6Scxml /usr/lib64/cmake/Qt6StateMachine /usr/lib64/cmake/Qt6ScxmlTools /usr/lib64/libQt6StateMachine.so /usr/lib64/libQt6Scxml.prl /usr/include/QtScxml /usr/include/QtStateMachine /usr/lib64/cmake/Qt6BuildInternals/StandaloneTests/QtScxmlTestsConfig.cmake"
+LINKS[qt6scxml-lib]="/usr/lib64/libQt6Scxml.so.6.6.2 /usr/lib64/libQt6StateMachine.so.6.6.2 /usr/lib64/libQt6Scxml.so.6 /usr/lib64/libQt6StateMachine.so.6"
+LINKS[qt6scxml-libexec]="/usr/libexec/qscxmlc"
+LINKS[qt6websockets]="/usr/lib64/qt6/mkspecs/modules/qt_lib_websockets.pri /usr/lib64/qt6/mkspecs/modules/qt_lib_websockets_private.pri /usr/lib64/qt6/modules/WebSockets.json /usr/lib64/qt6/metatypes/qt6websockets_relwithdebinfo_metatypes.json /usr/lib64/qt6/qml/QtWebSockets/qmldir /usr/lib64/qt6/qml/QtWebSockets/plugins.qmltypes"
+LINKS[qt6websockets-dev]="/usr/lib64/pkgconfig/Qt6WebSockets.pc /usr/lib64/libQt6WebSockets.prl /usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qmlwebsocketsTargets-relwithdebinfo.cmake /usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qmlwebsocketsAdditionalTargetInfo.cmake /usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qmlwebsocketsConfigVersion.cmake /usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qmlwebsocketsTargets.cmake /usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qmlwebsocketsConfig.cmake /usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qmlwebsocketsConfigVersionImpl.cmake /usr/lib64/cmake/Qt6WebSockets /usr/lib64/cmake/Qt6BuildInternals/StandaloneTests/QtWebSocketsTestsConfig.cmake /usr/lib64/libQt6WebSockets.so /usr/include/QtWebSockets"
+LINKS[qt6websockets-lib]="/usr/lib64/libQt6WebSockets.so.6.6.2 /usr/lib64/libQt6WebSockets.so.6 /usr/lib64/qt6/qml/QtWebSockets/libqmlwebsocketsplugin.so"
 
 DIR=~/devroot
 
+curl https://cdn.download.clearlinux.org/releases/current/clear/x86_64/os/Packages/ |
+sed -ne 's/^<a href="\(.*\)-\(.*-.*\).x86_64.rpm">.*<\/a>.*$/VERSION[\1]=\2/p' > $DIR/collect.lst
+source $DIR/collect.lst
+
 TODO=""
 echo checking...
-for p in $PACKAGES; do
+for p in "${!LINKS[@]}"; do
 	echo " $p-${VERSION[$p]}"
-	FINDCMD="find $DIR/$p-${VERSION[$p]}"
+	if ! test -d $DIR/$p-${VERSION[$p]}; then (
+		echo MISSING
+		cd $DIR
+		wget https://cdn.download.clearlinux.org/releases/current/clear/x86_64/os/Packages/$p-${VERSION[$p]}.x86_64.rpm
+		mkdir $p-${VERSION[$p]}
+		rpm2cpio $p-${VERSION[$p]}.x86_64.rpm | (cd $p-${VERSION[$p]} && cpio --extract --unconditional --preserve-modification-time --make-directories)
+	) fi
+	FINDCMD="find $DIR/$p-${VERSION[$p]} -path $DIR/$p-${VERSION[$p]}/V3 -prune -o"
 	for l in ${LINKS[$p]}; do
 		s="$DIR/$p-${VERSION[$p]}$l"
 		FINDCMD="$FINDCMD -path $s -prune -o"
