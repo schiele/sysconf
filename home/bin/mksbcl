@@ -28,7 +28,7 @@ cd ../..
 set +x
 exec 1>&3 2>&4 3>&- 4>&-
 mv .build.log "$destdir/"
-git commit -m 'Update math journal' float-math.lisp-expr || true
+git commit -m 'Update math journal' xfloat-math.lisp-expr || true
 if test $# = 0; then
 	rm -f ~/tools/sbcl/master
 	ln -s "$ver" ~/tools/sbcl/master
