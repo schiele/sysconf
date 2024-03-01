@@ -12,7 +12,6 @@ VERSION[OCCT-lib]=7.7.1-9
 LINKS[OCCT-lib]="/usr/lib64/libTKVRML.so.7.7 /usr/lib64/libTKTopAlgo.so.7.7.1 /usr/lib64/libTKCDF.so.7.7.1 /usr/lib64/libTKStd.so.7.7 /usr/lib64/libTKTObjDRAW.so.7.7.1 /usr/lib64/libTKXDESTEP.so.7.7 /usr/lib64/libTKGeomAlgo.so.7.7.1 /usr/lib64/libTKSTL.so.7.7 /usr/lib64/libTKQADraw.so.7.7.1 /usr/lib64/libTKG2d.so.7.7.1 /usr/lib64/libTKBin.so.7.7.1 /usr/lib64/libTKXSBase.so.7.7 /usr/lib64/libTKTopAlgo.so.7.7 /usr/lib64/libTKShHealing.so.7.7 /usr/lib64/libTKernel.so.7.7 /usr/lib64/libTKG3d.so.7.7 /usr/lib64/libTKDCAF.so.7.7.1 /usr/lib64/libTKDraw.so.7.7 /usr/lib64/libTKXSBase.so.7.7.1 /usr/lib64/libTKV3d.so.7.7 /usr/lib64/libTKBool.so.7.7.1 /usr/lib64/libTKFeat.so.7.7 /usr/lib64/libTKSTEPAttr.so.7.7.1 /usr/lib64/libTKExpress.so.7.7 /usr/lib64/libTKBin.so.7.7 /usr/lib64/libTKXDE.so.7.7 /usr/lib64/libTKVCAF.so.7.7.1 /usr/lib64/libTKMesh.so.7.7 /usr/lib64/libTKVRML.so.7.7.1 /usr/lib64/libTKOpenGlTest.so.7.7.1 /usr/lib64/libTKSTEP.so.7.7.1 /usr/lib64/libTKBool.so.7.7 /usr/lib64/libTKXDE.so.7.7.1 /usr/lib64/libTKViewerTest.so.7.7.1 /usr/lib64/libTKDraw.so.7.7.1 /usr/lib64/libTKCAF.so.7.7 /usr/lib64/libTKBO.so.7.7 /usr/lib64/libTKSTEPBase.so.7.7 /usr/lib64/libTKBinXCAF.so.7.7.1 /usr/lib64/libTKXMesh.so.7.7 /usr/lib64/libTKGeomAlgo.so.7.7 /usr/lib64/libTKXMesh.so.7.7.1 /usr/lib64/libTKOffset.so.7.7 /usr/lib64/libTKShHealing.so.7.7.1 /usr/lib64/libTKMeshVS.so.7.7.1 /usr/lib64/libTKIGES.so.7.7 /usr/lib64/libTKMath.so.7.7.1 /usr/lib64/libTKXmlXCAF.so.7.7 /usr/lib64/libTKOffset.so.7.7.1 /usr/lib64/libTKGeomBase.so.7.7.1 /usr/lib64/libTKBRep.so.7.7 /usr/lib64/libTKBinL.so.7.7 /usr/lib64/libTKXDEDRAW.so.7.7.1 /usr/lib64/libTKFillet.so.7.7 /usr/lib64/libTKSTEPAttr.so.7.7 /usr/lib64/libTKXDECascade.so.7.7 /usr/lib64/libTKService.so.7.7.1 /usr/lib64/libTKBinTObj.so.7.7 /usr/lib64/libTKIGES.so.7.7.1 /usr/lib64/libTKMeshVS.so.7.7 /usr/lib64/libTKCAF.so.7.7.1 /usr/lib64/libTKRWMesh.so.7.7 /usr/lib64/libTKStdL.so.7.7.1 /usr/lib64/libTKXmlTObj.so.7.7.1 /usr/lib64/libTKStdL.so.7.7 /usr/lib64/libTKHLR.so.7.7.1 /usr/lib64/libTKLCAF.so.7.7.1 /usr/lib64/libTKXmlL.so.7.7 /usr/lib64/libTKExpress.so.7.7.1 /usr/lib64/libTKViewerTest.so.7.7 /usr/lib64/libTKBinTObj.so.7.7.1 /usr/lib64/libTKXCAF.so.7.7.1 /usr/lib64/libTKTObj.so.7.7.1 /usr/lib64/libTKOpenGlTest.so.7.7 /usr/lib64/libTKernel.so.7.7.1 /usr/lib64/libTKSTL.so.7.7.1 /usr/lib64/libTKTopTest.so.7.7.1 /usr/lib64/libTKXDEDRAW.so.7.7 /usr/lib64/libTKG2d.so.7.7 /usr/lib64/libTKMesh.so.7.7.1 /usr/lib64/libTKTObjDRAW.so.7.7 /usr/lib64/libTKGeomBase.so.7.7 /usr/lib64/libTKLCAF.so.7.7 /usr/lib64/libTKPrim.so.7.7 /usr/lib64/libTKTObj.so.7.7 /usr/lib64/libTKV3d.so.7.7.1 /usr/lib64/libTKXDESTEP.so.7.7.1 /usr/lib64/libTKSTEP.so.7.7 /usr/lib64/libTKXmlXCAF.so.7.7.1 /usr/lib64/libTKMath.so.7.7 /usr/lib64/libTKDCAF.so.7.7 /usr/lib64/libTKXml.so.7.7.1 /usr/lib64/libTKHLR.so.7.7 /usr/lib64/libTKService.so.7.7 /usr/lib64/libTKFillet.so.7.7.1 /usr/lib64/libTKXDEIGES.so.7.7.1 /usr/lib64/libTKBRep.so.7.7.1 /usr/lib64/libTKTopTest.so.7.7 /usr/lib64/libTKCDF.so.7.7 /usr/lib64/libTKXmlTObj.so.7.7 /usr/lib64/libTKBO.so.7.7.1 /usr/lib64/libTKPrim.so.7.7.1 /usr/lib64/libTKVCAF.so.7.7 /usr/lib64/libTKStd.so.7.7.1 /usr/lib64/libTKXDECascade.so.7.7.1 /usr/lib64/libTKBinL.so.7.7.1 /usr/lib64/libTKQADraw.so.7.7 /usr/lib64/libTKXmlL.so.7.7.1 /usr/lib64/libTKRWMesh.so.7.7.1 /usr/lib64/libTKOpenGl.so.7.7.1 /usr/lib64/libTKSTEP209.so.7.7 /usr/lib64/libTKOpenGl.so.7.7 /usr/lib64/libTKFeat.so.7.7.1 /usr/lib64/libTKBinXCAF.so.7.7 /usr/lib64/libTKG3d.so.7.7.1 /usr/lib64/libTKSTEPBase.so.7.7.1 /usr/lib64/libTKXSDRAW.so.7.7 /usr/lib64/libTKXml.so.7.7 /usr/lib64/libTKXCAF.so.7.7 /usr/lib64/libTKXDEIGES.so.7.7 /usr/lib64/libTKXSDRAW.so.7.7.1 /usr/lib64/libTKSTEP209.so.7.7.1"
 LINKS[OpenCSG-dev]="/usr/include/opencsg.h /usr/lib64/libopencsg.so"
 LINKS[OpenCSG-lib]="/usr/lib64/libopencsg.so.1.4.2 /usr/lib64/libopencsg.so.1.4 /usr/lib64/libopencsg.so.1"
-#LINKS[qhull-staticdev]="/usr/lib64/libqhullstatic_r.a /usr/lib64/libqhullcpp.a /usr/lib64/libqhullstatic.a"
 LINKS[qscintilla-dev]="/usr/include/qt5/Qsci /usr/lib64/libqscintilla2_qt5.so /usr/lib64/qt5/mkspecs/features/qscintilla2.prf"
 LINKS[qscintilla-lib]="/usr/lib64/libqscintilla2_qt5.so.15 /usr/lib64/libqscintilla2_qt5.so.15.2.0 /usr/lib64/libqscintilla2_qt5.so.15.2"
 LINKS[qt6scxml]="/usr/lib64/qt6/mkspecs/features/qscxmlc.prf /usr/lib64/qt6/mkspecs/modules/qt_lib_scxml.pri /usr/lib64/qt6/mkspecs/modules/qt_lib_statemachine_private.pri /usr/lib64/qt6/mkspecs/modules/qt_lib_scxml_private.pri /usr/lib64/qt6/mkspecs/modules/qt_lib_statemachine.pri /usr/lib64/qt6/modules/StateMachine.json /usr/lib64/qt6/modules/Scxml.json /usr/lib64/qt6/metatypes/qt6scxml_relwithdebinfo_metatypes.json /usr/lib64/qt6/metatypes/qt6statemachine_relwithdebinfo_metatypes.json"
@@ -25,9 +24,9 @@ LINKS[qt6websockets-lib]="/usr/lib64/libQt6WebSockets.so.6.6.2 /usr/lib64/libQt6
 
 DIR=~/devroot
 
+source <(
 curl https://cdn.download.clearlinux.org/releases/current/clear/x86_64/os/Packages/ |
-sed -ne 's/^<a href="\(.*\)-\(.*-.*\).x86_64.rpm">.*<\/a>.*$/VERSION[\1]=\2/p' > $DIR/collect.lst
-source $DIR/collect.lst
+sed -ne 's/^<a href="\(.*\)-\(.*-.*\).x86_64.rpm">.*<\/a>.*$/VERSION[\1]=\2/p')
 
 TODO=""
 echo checking...
@@ -36,9 +35,20 @@ for p in "${!LINKS[@]}"; do
 	if ! test -d $DIR/$p-${VERSION[$p]}; then (
 		echo MISSING
 		cd $DIR
-		wget https://cdn.download.clearlinux.org/releases/current/clear/x86_64/os/Packages/$p-${VERSION[$p]}.x86_64.rpm
+		test -r $p-${VERSION[$p]}.x86_64.rpm ||
+			wget https://cdn.download.clearlinux.org/releases/current/clear/x86_64/os/Packages/$p-${VERSION[$p]}.x86_64.rpm ||
+			exit 1
 		mkdir $p-${VERSION[$p]}
-		rpm2cpio $p-${VERSION[$p]}.x86_64.rpm | (cd $p-${VERSION[$p]} && cpio --extract --unconditional --preserve-modification-time --make-directories)
+		rpm2cpio $p-${VERSION[$p]}.x86_64.rpm | (
+			cd $p-${VERSION[$p]} &&
+			cpio --extract --unconditional --preserve-modification-time --make-directories &&
+			find . -xtype l | while read F; do
+				L=$(dirname ${F/.})/$(readlink $F)
+				echo "RELINK: $F -> $L"
+				rm -f $F
+				ln -s $L $F
+			done
+		)
 	) fi
 	FINDCMD="find $DIR/$p-${VERSION[$p]} -path $DIR/$p-${VERSION[$p]}/V3 -prune -o"
 	for l in ${LINKS[$p]}; do
