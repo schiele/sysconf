@@ -14,13 +14,73 @@ LINKS[OpenCSG-dev]="/usr/include/opencsg.h /usr/lib64/libopencsg.so"
 LINKS[OpenCSG-lib]="/usr/lib64/libopencsg.so.1.4.2 /usr/lib64/libopencsg.so.1.4 /usr/lib64/libopencsg.so.1"
 LINKS[qscintilla-dev]="/usr/include/qt5/Qsci /usr/lib64/libqscintilla2_qt5.so /usr/lib64/qt5/mkspecs/features/qscintilla2.prf"
 LINKS[qscintilla-lib]="/usr/lib64/libqscintilla2_qt5.so.15 /usr/lib64/libqscintilla2_qt5.so.15.2.0 /usr/lib64/libqscintilla2_qt5.so.15.2"
-LINKS[qt6scxml]="/usr/lib64/qt6/mkspecs/features/qscxmlc.prf /usr/lib64/qt6/mkspecs/modules/qt_lib_scxml.pri /usr/lib64/qt6/mkspecs/modules/qt_lib_statemachine_private.pri /usr/lib64/qt6/mkspecs/modules/qt_lib_scxml_private.pri /usr/lib64/qt6/mkspecs/modules/qt_lib_statemachine.pri /usr/lib64/qt6/modules/StateMachine.json /usr/lib64/qt6/modules/Scxml.json /usr/lib64/qt6/metatypes/qt6scxml_relwithdebinfo_metatypes.json /usr/lib64/qt6/metatypes/qt6statemachine_relwithdebinfo_metatypes.json"
-LINKS[qt6scxml-dev]="/usr/lib64/libQt6Scxml.so /usr/lib64/libQt6StateMachine.prl /usr/lib64/pkgconfig/Qt6Scxml.pc /usr/lib64/pkgconfig/Qt6StateMachine.pc /usr/lib64/cmake/Qt6Scxml /usr/lib64/cmake/Qt6StateMachine /usr/lib64/cmake/Qt6ScxmlTools /usr/lib64/libQt6StateMachine.so /usr/lib64/libQt6Scxml.prl /usr/include/QtScxml /usr/include/QtStateMachine /usr/lib64/cmake/Qt6BuildInternals/StandaloneTests/QtScxmlTestsConfig.cmake"
-LINKS[qt6scxml-lib]="/usr/lib64/libQt6Scxml.so.6.6.2 /usr/lib64/libQt6StateMachine.so.6.6.2 /usr/lib64/libQt6Scxml.so.6 /usr/lib64/libQt6StateMachine.so.6"
+LINKS[qt6scxml-dev]="
+/usr/lib64/libQt6Scxml.so
+/usr/lib64/libQt6StateMachine.prl
+/usr/lib64/libQt6StateMachineQml.prl
+/usr/lib64/pkgconfig/Qt6Scxml.pc
+/usr/lib64/pkgconfig/Qt6ScxmlQml.pc
+/usr/lib64/pkgconfig/Qt6StateMachine.pc
+/usr/lib64/pkgconfig/Qt6StateMachineQml.pc
+/usr/lib64/cmake/Qt6Scxml
+/usr/lib64/cmake/Qt6StateMachine
+/usr/lib64/cmake/Qt6ScxmlTools
+/usr/lib64/libQt6StateMachine.so
+/usr/lib64/libQt6Scxml.prl
+/usr/include/QtScxml
+/usr/include/QtStateMachine
+/usr/lib64/cmake/Qt6BuildInternals/StandaloneTests/QtScxmlTestsConfig.cmake
+/usr/lib64/qt6/mkspecs/features/qscxmlc.prf
+/usr/lib64/qt6/mkspecs/modules/qt_lib_scxml.pri
+/usr/lib64/qt6/mkspecs/modules/qt_lib_statemachineqml.pri
+/usr/lib64/qt6/mkspecs/modules/qt_lib_scxmlqml.pri
+/usr/lib64/qt6/mkspecs/modules/qt_lib_statemachineqml_private.pri
+/usr/lib64/qt6/mkspecs/modules/qt_lib_statemachine_private.pri
+/usr/lib64/qt6/mkspecs/modules/qt_lib_scxmlqml_private.pri
+/usr/lib64/qt6/mkspecs/modules/qt_lib_scxml_private.pri
+/usr/lib64/qt6/mkspecs/modules/qt_lib_statemachine.pri
+/usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6declarative_scxmlConfig.cmake
+/usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qtqmlstatemachineConfig.cmake
+/usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6declarative_scxmlAdditionalTargetInfo.cmake
+/usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6declarative_scxmlTargets-relwithdebinfo.cmake
+/usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qtqmlstatemachineConfigVersion.cmake
+/usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qtqmlstatemachineTargets-relwithdebinfo.cmake
+/usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qtqmlstatemachineConfigVersionImpl.cmake
+/usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qtqmlstatemachineAdditionalTargetInfo.cmake
+/usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qtqmlstatemachineTargets.cmake
+/usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6declarative_scxmlTargets.cmake
+/usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6declarative_scxmlConfigVersion.cmake
+/usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6declarative_scxmlConfigVersionImpl.cmake
+/usr/lib64/cmake/Qt6StateMachineQml
+/usr/lib64/cmake/Qt6ScxmlQml
+/usr/lib64/libQt6StateMachineQml.so
+/usr/lib64/libQt6ScxmlQml.prl
+/usr/lib64/libQt6ScxmlQml.so
+/usr/include/QtScxmlQml
+/usr/include/QtStateMachineQml
+"
+LINKS[qt6scxml-lib]="
+/usr/lib64/libQt6Scxml.so.6.6.3
+/usr/lib64/libQt6StateMachine.so.6.6.3
+/usr/lib64/libQt6Scxml.so.6
+/usr/lib64/libQt6StateMachine.so.6
+/usr/lib64/libQt6StateMachineQml.so.6
+/usr/lib64/libQt6ScxmlQml.so.6.6.3
+/usr/lib64/qt6/qml/QtQml/StateMachine
+/usr/lib64/qt6/qml/QtScxml
+/usr/lib64/qt6/plugins/scxmldatamodel
+/usr/lib64/qt6/modules/StateMachine.json
+/usr/lib64/qt6/modules/StateMachineQml.json
+/usr/lib64/qt6/modules/Scxml.json
+/usr/lib64/qt6/modules/ScxmlQml.json
+/usr/lib64/qt6/metatypes/qt6scxmlqml_relwithdebinfo_metatypes.json
+/usr/lib64/qt6/metatypes/qt6scxml_relwithdebinfo_metatypes.json
+/usr/lib64/qt6/metatypes/qt6statemachineqml_relwithdebinfo_metatypes.json
+/usr/lib64/qt6/metatypes/qt6statemachine_relwithdebinfo_metatypes.json
+/usr/lib64/libQt6ScxmlQml.so.6
+/usr/lib64/libQt6StateMachineQml.so.6.6.3
+"
 LINKS[qt6scxml-libexec]="/usr/libexec/qscxmlc"
-LINKS[qt6websockets]="/usr/lib64/qt6/mkspecs/modules/qt_lib_websockets.pri /usr/lib64/qt6/mkspecs/modules/qt_lib_websockets_private.pri /usr/lib64/qt6/modules/WebSockets.json /usr/lib64/qt6/metatypes/qt6websockets_relwithdebinfo_metatypes.json /usr/lib64/qt6/qml/QtWebSockets/qmldir /usr/lib64/qt6/qml/QtWebSockets/plugins.qmltypes"
-LINKS[qt6websockets-dev]="/usr/lib64/pkgconfig/Qt6WebSockets.pc /usr/lib64/libQt6WebSockets.prl /usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qmlwebsocketsTargets-relwithdebinfo.cmake /usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qmlwebsocketsAdditionalTargetInfo.cmake /usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qmlwebsocketsConfigVersion.cmake /usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qmlwebsocketsTargets.cmake /usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qmlwebsocketsConfig.cmake /usr/lib64/cmake/Qt6Qml/QmlPlugins/Qt6qmlwebsocketsConfigVersionImpl.cmake /usr/lib64/cmake/Qt6WebSockets /usr/lib64/cmake/Qt6BuildInternals/StandaloneTests/QtWebSocketsTestsConfig.cmake /usr/lib64/libQt6WebSockets.so /usr/include/QtWebSockets"
-LINKS[qt6websockets-lib]="/usr/lib64/libQt6WebSockets.so.6.6.2 /usr/lib64/libQt6WebSockets.so.6 /usr/lib64/qt6/qml/QtWebSockets/libqmlwebsocketsplugin.so"
 
 DIR=~/devroot
 
