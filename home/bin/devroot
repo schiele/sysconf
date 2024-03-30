@@ -275,12 +275,6 @@ LINKS[qt6scxml-dev]="
 /usr/include/QtScxmlQml
 /usr/include/QtStateMachineQml
 "
-VERSION[qtbase-dev-missing]=5.15.2-133
-LINKS[qtbase-dev-missing]="
-/usr/bin/qmake
-/usr/bin/qdbuscpp2xml
-/usr/bin/qdbusxml2cpp
-"
 
 DIR=~/devroot
 
