@@ -1,0 +1,22 @@
+#!/bin/bash
+set -eu
+cd ~/fricas
+BRANCH=master
+if test $# != 0; then
+	BRANCH="$1"
+	git switch --detach $1
+fi
+if test "$BRANCH" = master; then
+	git pull --rebase
+fi
+INST=/home/rschiele/tools/fricas/$BRANCH
+BUILD=/home/rschiele/tools/fricas/build_$BRANCH
+if ! test -d "$BUILD"; then
+	mkdir "$BUILD"
+	cd "$BUILD"
+	~/fricas/configure --with-lisp="sbcl --dynamic-space-size 2048" --with-gmp --with-x --prefix=$INST
+fi
+cd "$BUILD"
+make -j $(nproc) -O
+make install
+sed -e 's/\(emacs\)\([^a-z]\)/\1-x11\2/' $INST/bin/efricas > $INST/bin/efricas-x11
