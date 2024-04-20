@@ -278,9 +278,13 @@ LINKS[qt6scxml-dev]="
 
 DIR=~/devroot
 
-source <(
-curl https://cdn.download.clearlinux.org/releases/current/clear/x86_64/os/Packages/ |
-sed -ne 's/^<a href="\(.*\)-\(.*-.*\).x86_64.rpm">.*<\/a>.*$/VERSION[\1]=\2/p')
+. /usr/lib/os-release
+
+test -r "$DIR/packages.$BUILD_ID.ver" ||
+	curl "https://cdn.download.clearlinux.org/releases/$BUILD_ID/clear/x86_64/os/Packages/" |
+	sed -ne 's/^<a href="\(.*\)-\(.*-.*\).x86_64.rpm">.*<\/a>.*$/VERSION[\1]=\2/p' > "$DIR/packages.$BUILD_ID.ver"
+
+. "$DIR/packages.$BUILD_ID.ver"
 
 TODO=""
 echo checking...
@@ -290,7 +294,7 @@ for p in "${!LINKS[@]}"; do
 		echo MISSING
 		cd $DIR
 		test -r $p-${VERSION[$p]}.x86_64.rpm ||
-			wget https://cdn.download.clearlinux.org/releases/current/clear/x86_64/os/Packages/$p-${VERSION[$p]}.x86_64.rpm ||
+			wget "https://cdn.download.clearlinux.org/releases/$BUILD_ID/clear/x86_64/os/Packages/$p-${VERSION[$p]}.x86_64.rpm" ||
 			exit 1
 		mkdir $p-${VERSION[$p]}
 		rpm2cpio $p-${VERSION[$p]}.x86_64.rpm | (
