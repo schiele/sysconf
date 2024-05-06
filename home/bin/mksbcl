@@ -4,7 +4,7 @@ failnote()
 {
 	GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1[failed]/'" $NOTES edit $MERGEBASE
 	tail -n 31 ~/sbcl/.build.log |
-	head -n 25 |
+	awk '/^\+\+ failnote$/{exit} {print}' |
 	$NOTES append --no-separator -m "FAILED:" -F - $MERGEBASE
 	git push schiele notes/build
 }
@@ -33,7 +33,7 @@ fi
 export SBCL_MAKE_JOBS=-j$(nproc)
 MERGEBASE=$(git merge-base HEAD origin/master)
 $NOTES append --separator='======================================================================' -m "BUILD: $ver" $MERGEBASE
-$NOTES append --no-separator -m "bootstrap: $("$BOOTST/sbcl" --version)" -m "date: $(date)" -m "tasks:[incomplete]" $MERGEBASE
+$NOTES append --no-separator -m "bootstrap: $("$BOOTST/sbcl" --version)" -m "system: $(. /etc/os-release; echo $BUILD_ID)" -m "date: $(date)" -m "tasks:[incomplete]" $MERGEBASE
 trap failnote ERR
 exec 3>&1 4>&2 1> >(exec tee .build.log) 2>&1
 set -x
