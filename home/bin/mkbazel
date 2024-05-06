@@ -1,0 +1,59 @@
+#!/bin/bash
+NOTES="git notes --ref build"
+failnote()
+{
+	GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1[failed]/'" $NOTES edit $MERGEBASE
+	tail -n 31 ~/bazel/.build.log |
+	awk '/^\+\+ failnote$/{exit} {print}' |
+	$NOTES append --no-separator -m "FAILED:" -F - $MERGEBASE
+	git push schiele notes/build
+}
+set -eu
+cd ~/bazel
+TOTEST=master
+BOOTST=master
+test $# -lt 1 || TOTEST="$1"
+test $# -lt 2 || BOOTST="$2"
+BOOTST="$HOME/tools/bazel/$BOOTST"
+! test -h "$BOOTST" || BOOTST="$HOME/tools/bazel/$(readlink "$BOOTST")"
+test -x "$BOOTST/bazel"
+git checkout MODULE.bazel.lock
+if test "$TOTEST" = master; then
+	git switch master
+	git pull --rebase
+else
+	git switch --detach $1
+fi
+ver=$(git describe --tags 2>/dev/null ||
+      echo "$TOTEST-$(git rev-list --count HEAD)-$(git describe --always)")
+destdir=~/tools/bazel/"$ver"
+if test -d "$destdir"; then
+	echo "$ver is already installed."
+	exit 1
+fi
+MERGEBASE=$(git merge-base HEAD HEAD) #origin/master)
+$NOTES append --separator='======================================================================' -m "BUILD: $ver" $MERGEBASE
+$NOTES append --no-separator -m "bootstrap: $(basename "$BOOTST")" -m "system: $(. /etc/os-release; echo $BUILD_ID)" -m "date: $(date)" -m "tasks:[incomplete]" $MERGEBASE
+trap failnote ERR
+exec 3>&1 4>&2 1> >(exec tee .build.log) 2>&1
+set -x
+GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 build\2/'" $NOTES edit $MERGEBASE
+#bazel build //src:bazel-dev
+bazel build //src:bazel --compilation_mode=opt
+GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 install\2/'" $NOTES edit $MERGEBASE
+mkdir -p ~/tools/bazel/"$ver"
+rm -rf ~/tools/bazel/"$ver"/bazel
+cp bazel-bin/src/bazel ~/tools/bazel/"$ver"/bazel
+set +x
+exec 1>&3 2>&4 3>&- 4>&-
+trap ERR
+GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1/'" $NOTES edit $MERGEBASE
+$NOTES append --no-separator -m "SUCCESS" $MERGEBASE
+git push schiele notes/build
+mv .build.log "$destdir/"
+if test "$TOTEST" = master; then
+	rm -f ~/tools/bazel/master
+	ln -s "$ver" ~/tools/bazel/master
+	git push --force
+fi
+echo "$ver installed."
