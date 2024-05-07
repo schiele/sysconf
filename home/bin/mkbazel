@@ -25,7 +25,7 @@ else
 	git switch --detach $1
 fi
 ver=$(git describe --tags 2>/dev/null ||
-      echo "$TOTEST-$(git rev-list --count HEAD)-$(git describe --always)")
+      echo "root-$(git rev-list --count HEAD)-g$(git describe --always)")
 destdir=~/tools/bazel/"$ver"
 if test -d "$destdir"; then
 	echo "$ver is already installed."
@@ -39,7 +39,7 @@ exec 3>&1 4>&2 1> >(exec tee .build.log) 2>&1
 set -x
 GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 build\2/'" $NOTES edit $MERGEBASE
 #bazel build //src:bazel-dev
-bazel build //src:bazel --compilation_mode=opt
+"$BOOTST/bazel" build //src:bazel --compilation_mode=opt
 GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 install\2/'" $NOTES edit $MERGEBASE
 mkdir -p ~/tools/bazel/"$ver"
 rm -rf ~/tools/bazel/"$ver"/bazel
