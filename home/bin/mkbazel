@@ -18,12 +18,15 @@ BOOTST="$HOME/tools/bazel/$BOOTST"
 ! test -h "$BOOTST" || BOOTST="$HOME/tools/bazel/$(readlink "$BOOTST")"
 test -x "$BOOTST/bazel"
 git checkout MODULE.bazel.lock
-if test "$TOTEST" = master; then
-	git switch master
-	git pull --rebase
-else
-	git switch --detach $1
-fi
+case "$TOTEST" in
+	master|release-*)
+		git checkout "$TOTEST"
+		git pull --rebase
+		;;
+	*)
+		git checkout "$TOTEST"
+		;;
+esac
 ver=$(git describe --tags 2>/dev/null ||
       echo "root-$(git rev-list --count HEAD)-g$(git describe --always)")
 destdir=~/tools/bazel/"$ver"
@@ -51,9 +54,11 @@ GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1/'" $NOTES edit $MER
 $NOTES append --no-separator -m "SUCCESS" $MERGEBASE
 git push schiele notes/build
 mv .build.log "$destdir/"
-if test "$TOTEST" = master; then
-	rm -f ~/tools/bazel/master
-	ln -s "$ver" ~/tools/bazel/master
-	git push --force
-fi
+case "$TOTEST" in
+	master|release-*)
+		rm -f ~/tools/bazel/"$TOTEST"
+		ln -s "$ver" ~/tools/bazel/"$TOTEST"
+		git push --force
+		;;
+esac
 echo "$ver installed."
