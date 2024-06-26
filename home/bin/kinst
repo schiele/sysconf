@@ -1,0 +1,36 @@
+#!/bin/bash
+TDIR=$(mktemp -d)
+BOOTCURRENT=$(efibootmgr | sed -ne 's/^BootCurrent: //p')
+PARTUUID=$(efibootmgr | sed -ne "s/^Boot$BOOTCURRENT.*,GPT,\([0-9a-fx-]*\),.*/\1/p")
+BOOTDEV=$(sudo blkid --match-token PARTUUID=$PARTUUID -o device)
+sudo mount "$BOOTDEV" "$TDIR"
+(cd "$TDIR" && df -h . && find . -type f | xargs ls -lh)
+KDEF=$(sed -ne 's/^default Clear-linux-native-\(.*\).conf$/\1/p' "$TDIR/loader/loader.conf")
+KCUR=$(uname -r | sed -e 's/\.native$//')
+KSEL="$1"
+for i in $(ls "$TDIR/loader/entries" | sed -ne 's/^Clear-linux-native-\(.*\).conf$/\1/p'); do
+	case $i in
+		"$KDEF") echo "$i (default)";;
+		"$KCUR") echo "$i (current)";;
+		"$KSEL")
+			sudo rm "$TDIR/EFI/org.clearlinux/kernel-org.clearlinux.native.$KSEL"
+			sudo rm "$TDIR/EFI/org.clearlinux/initrd-org.clearlinux.native.$KSEL"
+			sudo rm "$TDIR/loader/entries/Clear-linux-native-$KSEL.conf"
+			echo "$i (deleted)"
+			KSEL=
+			;;
+		*) echo "$i";;
+	esac
+done
+case $KSEL in
+	-) (cd "$TDIR" && bash);;
+	"$KDEF"|"$KCUR"|"") ;;
+	*)
+		sudo cp ~/"devroot/linux-$KSEL/usr/lib/kernel/org.clearlinux.native.$KSEL" "$TDIR/EFI/org.clearlinux/kernel-org.clearlinux.native.$KSEL"
+		sudo cp ~/"devroot/linux-cpio-$KSEL/usr/lib/kernel/initrd-org.clearlinux.native.$KSEL" "$TDIR/EFI/org.clearlinux/initrd-org.clearlinux.native.$KSEL"
+		sudo cp "$TDIR/loader/entries/Clear-linux-native-$KDEF.conf" "$TDIR/loader/entries/Clear-linux-native-$KSEL.conf"
+		sudo sed -i -e "s/\(\.native\.\).*/\1$KSEL/" "$TDIR/loader/entries/Clear-linux-native-$KSEL.conf"
+		echo "$KSEL (added)";;
+esac
+sudo umount "$TDIR"
+rmdir "$TDIR"
