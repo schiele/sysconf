@@ -1,0 +1,3 @@
+#!/bin/bash
+cat /etc/os-release
+stat -L -c 'DATE="%y"' /etc/os-release
