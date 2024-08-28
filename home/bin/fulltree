@@ -1,0 +1,16 @@
+#!/bin/bash
+set -eux
+EMPTYTREE=$(git hash-object -t tree -w /dev/null)
+EMPTYCOMMIT=$(git hash-object -t commit -w --stdin <<EOT
+tree $EMPTYTREE
+author Nobody <nobody@nowhere.org> 0 +0000
+committer Nobody <nobody@nowhere.org> 0 +0000
+
+Go away, nothing here!
+EOT
+)
+FULLCOMMIT=$(git cat-file -p $1 | awk '/^$/{b=1}{if(b)print}!/^parent /{if(!b)print}/^tree /{if(!b)print "parent '$EMPTYCOMMIT'"}' | git hash-object -t commit -w --stdin)
+git branch -D emptycommit || true
+git branch emptycommit $EMPTYCOMMIT
+git branch -D fullcommit || true
+git branch fullcommit $FULLCOMMIT
