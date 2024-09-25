@@ -709,8 +709,8 @@ LINKS[qtwebengine-dev]="
 /usr/include/qt5/QtWebEngineCore
 "
 LINKS[catch2-lib]="
-/usr/lib64/libCatch2.so.3.6.0
-/usr/lib64/libCatch2Main.so.3.6.0
+/usr/lib64/libCatch2.so.3.7.0
+/usr/lib64/libCatch2Main.so.3.7.0
 "
 LINKS[catch2-dev]="
 /usr/lib64/pkgconfig/catch2.pc
