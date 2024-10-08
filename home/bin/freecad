@@ -1,2 +1,6 @@
 #!/bin/bash
-LD_PRELOAD=/usr/lib64/libX11.so.6:/usr/lib64/libdrm_amdgpu.so.1 exec ~/tools/freecad/current "$@"
+case $0 in
+	*-*) BRANCH=${0/*-};;
+	*) BRANCH=main;;
+esac
+LD_LIBRARY_PATH=~/.local/lib/python3.12/site-packages/PySide6 exec ~/tools/freecad/$BRANCH/bin/FreeCAD "$@"
