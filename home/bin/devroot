@@ -709,8 +709,8 @@ LINKS[qtwebengine-dev]="
 /usr/include/qt5/QtWebEngineCore
 "
 LINKS[catch2-lib]="
-/usr/lib64/libCatch2.so.3.7.0
-/usr/lib64/libCatch2Main.so.3.7.0
+/usr/lib64/libCatch2.so.3.7.1
+/usr/lib64/libCatch2Main.so.3.7.1
 "
 LINKS[catch2-dev]="
 /usr/lib64/pkgconfig/catch2.pc
@@ -733,6 +733,7 @@ test -r "$DIR/packages.$BUILD_ID.ver" ||
 
 TODO=""
 echo checking...
+rm -f "$DIR/expected.list"
 for p in "${!LINKS[@]}"; do
 	echo " $p-${VERSION[$p]}"
 	if ! test -d $DIR/$p-${VERSION[$p]}; then (
@@ -756,6 +757,7 @@ for p in "${!LINKS[@]}"; do
 	FINDCMD="find $DIR/$p-${VERSION[$p]} -path $DIR/$p-${VERSION[$p]}/V3 -prune -o"
 	for l in ${LINKS[$p]}; do
 		s="$DIR/$p-${VERSION[$p]}$l"
+		echo "$l -> $s" >> "$DIR/expected.list"
 		FINDCMD="$FINDCMD -path $s -prune -o"
 		if ! readlink -e $s >/dev/null; then
 			echo inconsistent entry: $s
@@ -789,4 +791,6 @@ if test "$TODO"; then
 	echo "please execute:$TODO"
 else
 	echo "everything good"
+	find /usr/ -type l | while read A; do echo "$A -> $(readlink $A)"; done | grep "$DIR/" > "$DIR/present.list"
+	diff -u <(sort "$DIR/present.list") <(sort "$DIR/expected.list")
 fi
