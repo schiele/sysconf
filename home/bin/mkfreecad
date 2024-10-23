@@ -1,0 +1,58 @@
+#!/bin/bash
+NOTES="git notes --ref build"
+failnote()
+{
+	GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1[failed]/'" $NOTES edit $MERGEBASE
+	tail -n 31 ~/freecad/build/.build.log |
+	awk '/^\+\+ failnote$/{exit} {print}' |
+	$NOTES append --no-separator -m "FAILED:" -F - $MERGEBASE
+	git push schiele notes/build
+}
+set -eu
+cd ~/freecad/source
+TOTEST=main
+test $# -lt 1 || TOTEST="$1"
+case "$TOTEST" in
+	main|releases/*)
+		git checkout "$TOTEST"
+		git pull --rebase
+		;;
+	*)
+		git checkout "$TOTEST"
+		;;
+esac
+ver=$(git describe --tags)
+destdir=~/tools/freecad/"$ver"
+if test -d "$destdir"; then
+	echo "$ver is already installed."
+	exit 1
+fi
+rm -rf ~/freecad/build
+mkdir ~/freecad/build
+MERGEBASE=$(git merge-base HEAD HEAD) #origin/master)
+$NOTES append --separator='======================================================================' -m "BUILD: $ver" $MERGEBASE
+$NOTES append --no-separator -m "system: $(. /etc/os-release; echo $BUILD_ID)" -m "date: $(date)" -m "tasks:[incomplete]" $MERGEBASE
+trap failnote ERR
+exec 3>&1 4>&2 1> >(exec tee ~/freecad/build/.build.log) 2>&1
+set -x
+GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 configure\2/'" $NOTES edit $MERGEBASE
+cmake -DCMAKE_BUILD_TYPE=Release -DFREECAD_USE_PYBIND11=ON -DBUILD_DYNAMIC_LINK_PYTHON=ON -DCMAKE_INSTALL_PREFIX=/home/rschiele/tools/freecad/$ver -DINSTALL_TO_SITEPACKAGES=OFF -DFREECAD_QT_VERSION=6 -S . -B ../build/
+GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 build\2/'" $NOTES edit $MERGEBASE
+make -C ../build/ -j $(nproc)
+GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 install\2/'" $NOTES edit $MERGEBASE
+make -C ../build/ install/strip
+set +x
+exec 1>&3 2>&4 3>&- 4>&-
+trap ERR
+GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1/'" $NOTES edit $MERGEBASE
+$NOTES append --no-separator -m "SUCCESS" $MERGEBASE
+git push schiele notes/build
+mv ~/freecad/build/.build.log "$destdir/"
+case "$TOTEST" in
+	main|releases/*)
+		rm -f ~/tools/freecad/"${TOTEST//\//_}"
+		ln -s "$ver" ~/tools/freecad/"${TOTEST//\//_}"
+		git push --force
+		;;
+esac
+echo "$ver installed."
