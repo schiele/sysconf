@@ -1,0 +1,6 @@
+#!/bin/bash
+case $0 in
+	*-*) BRANCH=${0/*-};;
+	*) BRANCH=master;;
+esac
+exec ~/tools/openscad/$BRANCH/bin/openscad "$@"
