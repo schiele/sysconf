@@ -21,6 +21,7 @@ case "$TOTEST" in
 		git checkout "$TOTEST"
 		;;
 esac
+git submodule update --init --recursive
 ver=$(git describe --tags)
 destdir=~/tools/freecad/"$ver"
 if test -d "$destdir"; then
