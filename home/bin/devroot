@@ -1,17 +1,5 @@
 #!/bin/bash
 declare -A VERSION LINKS
-VERSION[c-blosc-dev]=1.21.4-1
-LINKS[c-blosc-dev]="
-/usr/lib64/libblosc.so
-/usr/lib64/pkgconfig/blosc.pc
-/usr/include/blosc-export.h
-/usr/include/blosc.h
-"
-VERSION[c-blosc-lib]=1.21.4-1
-LINKS[c-blosc-lib]="
-/usr/lib64/libblosc.so.1
-/usr/lib64/libblosc.so.1.21.4
-"
 LINKS[cereal-dev]="
 /usr/include/cereal
 /usr/lib64/cmake/cereal
@@ -719,6 +707,10 @@ LINKS[catch2-dev]="
 /usr/lib64/cmake/Catch2
 /usr/lib64/libCatch2.so
 /usr/include/catch2
+"
+LINKS[glm-dev]="
+/usr/lib64/cmake/glm
+/usr/include/glm
 "
 
 DIR=~/devroot
