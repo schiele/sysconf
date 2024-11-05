@@ -38,7 +38,7 @@ trap failnote ERR
 exec 3>&1 4>&2 1> >(exec tee .build.log) 2>&1
 set -x
 GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 build\2/'" $NOTES edit $MERGEBASE
-PATH="$BOOTST:$PATH" ./make.sh --prefix="$destdir"
+PATH="$BOOTST:$PATH" ./make.sh --prefix="$destdir" --with-sb-core-compression
 GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 test\2/'" $NOTES edit $MERGEBASE
 cd tests
 ./run-tests.sh
