@@ -697,8 +697,8 @@ LINKS[qtwebengine-dev]="
 /usr/include/qt5/QtWebEngineCore
 "
 LINKS[catch2-lib]="
-/usr/lib64/libCatch2.so.3.7.1
-/usr/lib64/libCatch2Main.so.3.7.1
+/usr/lib64/libCatch2.so.3.8.0
+/usr/lib64/libCatch2Main.so.3.8.0
 "
 LINKS[catch2-dev]="
 /usr/lib64/pkgconfig/catch2.pc
@@ -717,11 +717,11 @@ DIR=~/devroot
 
 . /usr/lib/os-release
 
-test -r "$DIR/packages.$BUILD_ID.ver" ||
-	curl "https://cdn.download.clearlinux.org/releases/$BUILD_ID/clear/x86_64/os/Packages/" |
-	sed -ne 's/^<a href="\(.*\)-\(.*-.*\).x86_64.rpm">.*<\/a>.*$/VERSION[\1]=\2/p' > "$DIR/packages.$BUILD_ID.ver"
+test -r "$DIR/packages.$VERSION_ID.ver" ||
+	curl "https://cdn.download.clearlinux.org/releases/$VERSION_ID/clear/x86_64/os/Packages/" |
+	sed -ne 's/^<a href="\(.*\)-\(.*-.*\).x86_64.rpm">.*<\/a>.*$/VERSION[\1]=\2/p' > "$DIR/packages.$VERSION_ID.ver"
 
-. "$DIR/packages.$BUILD_ID.ver"
+. "$DIR/packages.$VERSION_ID.ver"
 
 TODO=""
 echo checking...
@@ -732,7 +732,7 @@ for p in "${!LINKS[@]}"; do
 		echo MISSING
 		cd $DIR
 		test -r $p-${VERSION[$p]}.x86_64.rpm ||
-			wget "https://cdn.download.clearlinux.org/releases/$BUILD_ID/clear/x86_64/os/Packages/$p-${VERSION[$p]}.x86_64.rpm" ||
+			wget "https://cdn.download.clearlinux.org/releases/$VERSION_ID/clear/x86_64/os/Packages/$p-${VERSION[$p]}.x86_64.rpm" ||
 			exit 1
 		mkdir $p-${VERSION[$p]}
 		rpm2cpio $p-${VERSION[$p]}.x86_64.rpm | (
