@@ -1,4 +1,6 @@
 #!/bin/bash
+#PAR=$(nproc)
+PAR=8
 NOTES="git notes --ref build"
 failnote()
 {
@@ -38,8 +40,9 @@ exec 3>&1 4>&2 1> >(exec tee ~/freecad/build/.build.log) 2>&1
 set -x
 GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 configure\2/'" $NOTES edit $MERGEBASE
 cmake -DCMAKE_BUILD_TYPE=Release -DFREECAD_USE_PYBIND11=ON -DBUILD_DYNAMIC_LINK_PYTHON=ON -DCMAKE_INSTALL_PREFIX=/home/rschiele/tools/freecad/$ver -DINSTALL_TO_SITEPACKAGES=OFF -DFREECAD_QT_VERSION=6 -S . -B ../build/
+sed -i -e 's,/usr/lib64/\(libQt6[^ ]*\.so\.6\)[^ ]*,/home/rschiele/.local/lib/python3.13/site-packages/PySide6/Qt/lib/\1,g' $(find ../build -name link.txt)
 GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 build\2/'" $NOTES edit $MERGEBASE
-make -C ../build/ -j $(nproc)
+make -C ../build/ -j $PAR
 GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 install\2/'" $NOTES edit $MERGEBASE
 make -C ../build/ install/strip
 set +x
