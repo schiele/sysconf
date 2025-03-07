@@ -3,16 +3,19 @@ NOTES="git notes --ref build"
 failnote()
 {
 	GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1[failed]/'" $NOTES edit $MERGEBASE
-	tail -n 31 ~/bazel/.build.log |
+	tail -n 31 ~/bazel/bazel/.build.log |
 	awk '/^\+\+ failnote$/{exit} {print}' |
 	$NOTES append --no-separator -m "FAILED:" -F - $MERGEBASE
 	git push schiele notes/build
 }
 set -eu
-cd ~/bazel
+cd ~/bazel/bazel
 TOTEST=master
 BOOTST=master
 test $# -lt 1 || TOTEST="$1"
+case "$TOTEST" in
+	master|release-*) BOOTST="$TOTEST";;
+esac
 test $# -lt 2 || BOOTST="$2"
 BOOTST="$HOME/tools/bazel/$BOOTST"
 ! test -h "$BOOTST" || BOOTST="$HOME/tools/bazel/$(readlink "$BOOTST")"
@@ -42,7 +45,8 @@ exec 3>&1 4>&2 1> >(exec tee .build.log) 2>&1
 set -x
 GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 build\2/'" $NOTES edit $MERGEBASE
 #bazel build //src:bazel-dev
-"$BOOTST/bazel" build //src:bazel --compilation_mode=opt
+JAVA_HOME= "$BOOTST/bazel" build //src:bazel --compilation_mode=opt
+#--sandbox_debug --verbose_failures
 GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 install\2/'" $NOTES edit $MERGEBASE
 mkdir -p ~/tools/bazel/"$ver"
 rm -rf ~/tools/bazel/"$ver"/bazel
