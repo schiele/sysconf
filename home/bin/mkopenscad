@@ -41,7 +41,7 @@ set -x
 GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 configure\2/'" $NOTES edit $MERGEBASE
 cmake -DEXPERIMENTAL=1 -DCMAKE_INSTALL_PREFIX=/home/rschiele/tools/openscad/$ver -DUSE_QT6=1 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -S . -B build/
 GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 build\2/'" $NOTES edit $MERGEBASE
-make -C build/ -j $PAR
+make -C build/ -j $PAR -O
 GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 install\2/'" $NOTES edit $MERGEBASE
 make -C build/ install/strip
 set +x
