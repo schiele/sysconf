@@ -13,3 +13,4 @@ endif " has("autocmd")
 set number
 set relativenumber
 highlight LineNr ctermfg=grey
+let g:copilot_dontask = 1
