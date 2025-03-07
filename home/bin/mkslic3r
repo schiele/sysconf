@@ -1,0 +1,88 @@
+#!/bin/bash
+#PAR=$(nproc)
+PAR=8
+NOTES="git notes --ref build"
+failnote()
+{
+	GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1[failed]/'" $NOTES edit $MERGEBASE
+	tail -n 31 ~/PrusaSlicer/build/.build.log |
+	awk '/^\+\+ failnote$/{exit} {print}' |
+	$NOTES append --no-separator -m "FAILED:" -F - $MERGEBASE
+	git push schiele notes/build
+}
+set -eu
+cd ~/PrusaSlicer
+TOTEST=master
+test $# -lt 1 || TOTEST="$1"
+git submodule deinit resources/profiles
+case "$TOTEST" in
+	master|stable|superslicer_*|orcaslicer_*)
+		git checkout "$TOTEST"
+		git pull --rebase
+		;;
+	*)
+		git checkout "$TOTEST"
+		;;
+esac
+git submodule update --init --recursive
+ver=$(git describe --tags)
+destdir=~/tools/slicer/"$ver"
+if test -d "$destdir"; then
+	echo "$ver is already installed."
+	exit 1
+fi
+DEPSKIP='Blosc;Boost;Cereal;CGAL;CURL;Eigen;EXPAT;GLEW;GMP;JPEG;MPFR;NLopt;OCCT;OpenCSG;OpenEXR;OpenSSL;PNG;Qhull;TBB;TIFF;z3;ZLIB'
+case "$TOTEST" in
+	stable)
+		;;
+	*)
+		DEPSKIP="$DEPSKIP;Catch2"
+		;;
+esac
+case "$TOTEST" in
+	orcaslicer_*)
+		BLDFLAGS="-DSLIC3R_STATIC=1 -DBBL_RELEASE_TO_PUBLIC=1 -DBBL_INTERNAL_TESTING=0 -DORCA_TOOLS=ON"
+		;;
+	*)
+		BLDFLAGS="-DCMAKE_FIND_PACKAGE_PREFER_CONFIG=ON -DFORCE_OpenCASCADE_VERSION=7.5.0 -DOPENVDB_USE_STATIC_LIBS=ON -DUSE_BLOSC=TRUE"
+		;;
+esac
+export CMAKE_C_COMPILER_LAUNCHER=ccache
+export CMAKE_CXX_COMPILER_LAUNCHER=ccache
+rm -rf ~/PrusaSlicer/build
+mkdir -p ~/PrusaSlicer/build/deps
+MERGEBASE=$(git merge-base HEAD $(git rev-parse @{u} 2>/dev/null || echo HEAD)) #origin/master)
+$NOTES append --separator='======================================================================' -m "BUILD: $ver" $MERGEBASE
+$NOTES append --no-separator -m "system: $(. /etc/os-release; echo $BUILD_ID)" -m "date: $(date)" -m "tasks:[incomplete]" $MERGEBASE
+trap failnote ERR
+exec 3>&1 4>&2 1> >(exec tee ~/PrusaSlicer/build/.build.log) 2>&1
+set -x
+GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 configure_deps\2/'" $NOTES edit $MERGEBASE
+cmake -DPrusaSlicer_deps_PACKAGE_EXCLUDES:STRING="$DEPSKIP" -DSlic3r-deps_PACKAGE_EXCLUDES:STRING="$DEPSKIP" -DDEP_WX_GTK3=ON -DDEP_DOWNLOAD_DIR="$PWD/deps/download" -S deps -B build/deps
+GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 build_deps\2/'" $NOTES edit $MERGEBASE
+make -C build/deps -j $PAR -O
+ln -s libwxscintilla-3.2.a build/deps/destdir/usr/local/lib/libwx_gtk3u_scintilla-3.2.a
+GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 configure\2/'" $NOTES edit $MERGEBASE
+cmake $BLDFLAGS \
+	-DSLIC3R_GTK=3 -DSLIC3R_PCH=OFF \
+	-DCMAKE_PREFIX_PATH="$PWD/build/deps/destdir/usr/local" \
+	-DCMAKE_INSTALL_PREFIX="$destdir" -S . -B build
+GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 build\2/'" $NOTES edit $MERGEBASE
+make -C build -j $PAR -O
+GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1 install\2/'" $NOTES edit $MERGEBASE
+make -C build/ install/strip
+set +x
+exec 1>&3 2>&4 3>&- 4>&-
+trap ERR
+GIT_EDITOR="sed -i -e 's/^\(tasks:.*\)\(\[incomplete\]\)$/\1/'" $NOTES edit $MERGEBASE
+$NOTES append --no-separator -m "SUCCESS" $MERGEBASE
+git push schiele notes/build
+mv ~/PrusaSlicer/build/.build.log "$destdir/"
+case "$TOTEST" in
+	master|stable|superslicer_*|orcaslicer_*)
+		rm -f ~/tools/slicer/"${TOTEST//\//_}"
+		ln -s "$ver" ~/tools/slicer/"${TOTEST//\//_}"
+		git push --force
+		;;
+esac
+echo "$ver installed."
