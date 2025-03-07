@@ -1,0 +1,3 @@
+#!/bin/bash
+set -eux
+rsync -avHS --delete raspberrypi:~/ ~/raspibackup/
