@@ -1,0 +1,93 @@
+#!/bin/bash
+
+outtty=
+test -t 1 && outtty=1
+
+whatsnewold()
+{
+	cd "$1"
+	git fetch
+	VAL="$(git cherry -v "$2" "origin/$2")"
+	test "$VAL" && echo -e "$1 $2\n$VAL"
+}
+
+color()
+{
+	if test "$2" -gt 0 -a "$outtty"; then
+		echo -e "\e[$1m$2\e[0m"
+	else
+		echo "$2"
+	fi
+}
+
+revcount()
+{
+	#git rev-list --count refs/$3/$1 ^refs/$2/$1
+	git cherry $1 $2 | grep '^+' | wc -l
+}
+
+revcmp()
+{
+	printf "<%s|%s>" \
+		$(color 91 $(revcount $2 $1)) \
+		$(color 92 $(revcount $1 $2))
+}
+
+whatsnew()
+{
+	cd "$1"
+	printf "%-53s %-21s prefetch %s remote %s branch" \
+		"$1" "$2" \
+		$(revcmp $(git rev-parse --symbolic-full-name $2@{u} |
+			sed -e 's,^refs/,refs/prefetch/,') $2@{u}) \
+		$(revcmp $2@{u} $2)
+	git rev-parse --verify refs/remotes/schiele/$2 >/dev/null 2>/dev/null &&
+	       	printf " %s schiele"  $(revcmp $2 refs/remotes/schiele/$2)
+	printf "\n"
+	
+}
+
+if test "$1" = "clearlinux"; then
+	for i in ~/clearlinux/packages/*; do
+		whatsnew $i main
+	done
+else
+	whatsnew ~/PrusaSlicer stable
+	whatsnew ~/PrusaSlicer master
+	whatsnew ~/PrusaSlicer superslicer_dev
+	whatsnew ~/Prusa-Firmware-Buddy master
+	whatsnew ~/OrcaSlicer main
+	whatsnew ~/openscad master
+	whatsnew ~/libfive master
+	whatsnew ~/AusweisApp community
+	whatsnew ~/64er-magazin.de main
+	whatsnew ~/OSCAR-code master
+	whatsnew ~/freecad/source releases/FreeCAD-0-21
+	whatsnew ~/freecad/source releases/FreeCAD-1-0
+	whatsnew ~/freecad/source main
+	whatsnew ~/freecad/pivy master
+	whatsnew ~/sbcl master
+	whatsnew ~/fricas master
+	whatsnew ~/bazel/bazel release-7.4.0
+	whatsnew ~/bazel/bazel release-7.4.1
+	whatsnew ~/bazel/bazel release-7.5.0
+	whatsnew ~/bazel/bazel release-7.6.0
+	whatsnew ~/bazel/bazel release-8.0.0
+	whatsnew ~/bazel/bazel release-8.0.1
+	whatsnew ~/bazel/bazel release-8.1.0
+	whatsnew ~/bazel/bazel release-8.1.1
+	whatsnew ~/bazel/bazel release-8.2.0
+	whatsnew ~/bazel/bazel master
+	whatsnew ~/voron/Voron-2 Voron2.4
+	whatsnew ~/voron/Voron-Stealthburner main
+	whatsnew ~/voron/crowsnest master
+	whatsnew ~/voron/Klicky-Probe main
+	whatsnew ~/voron/Klipper-Adaptive-Meshing-Purging main
+	whatsnew ~/voron/klipper-config main
+	whatsnew ~/voron/LDOVoron2 main
+	whatsnew ~/voron/StealthChanger main
+	whatsnew ~/voron/VoronUsers main
+	whatsnew ~/voron/kickstarter-autodesk-3d master
+	whatsnew ~/.fonts/gfonts main
+	whatsnew ~/.vim/pack/github/start/copilot.vim release
+fi
