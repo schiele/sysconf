@@ -1,3 +1,8 @@
 #!/bin/bash
 cat /etc/os-release
+dd if=/usr/lib/kernel/default-native bs=1 skip=$(($(
+    dd if=/usr/lib/kernel/default-native bs=1 skip=526 count=2 status=none |
+    od -An -tu2)+512)) count=512 status=none | tr '\0' '\n' | head -n 1 |
+    sed -e 's/\(.*\)(.*) \(.*\)/KERNEL_DEFAULT="\1\2"/'
+echo "KERNEL_CURRENT=\"$(uname -rv)\""
 stat -L -c 'DATE="%y"' /etc/os-release
