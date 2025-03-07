@@ -1,6 +1,6 @@
 #!/bin/bash
 case $0 in
-	*-*) BRANCH=${0/*-};;
+	*-*) BRANCH=${0/*\/freecad-};;
 	*) BRANCH=main;;
 esac
 WAYLAND_DISPLAY= LD_LIBRARY_PATH=~/.local/lib/python3.13/site-packages/PySide6:~/.local/lib/python3.13/site-packages/PySide6/Qt/lib exec ~/tools/freecad/$BRANCH/bin/FreeCAD "$@"
